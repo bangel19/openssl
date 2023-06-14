@@ -54,6 +54,24 @@ kems:
     nid_hybrid: '0x2F05'
     oqs_alg: 'OQS_KEM_alg_frodokem_1344_shake'
   -
+    family: 'RLCE'
+    name_group: 'rlcel1'
+    nid: '0x024D'
+    nid_hybrid: '0x2F4D'
+    oqs_alg: ''OQS_KEM_alg_RLCE_l1'
+  -
+    family: 'RLCE'
+    name_group: 'rlcel3'
+    nid: '0x024E'
+    nid_hybrid: '0x2F4E'
+    oqs_alg: ''OQS_KEM_alg_RLCE_l3'
+  -
+    family: 'RLCE'
+    name_group: 'rlcel5'
+    nid: '0x024F'
+    nid_hybrid: '0x2F4F'
+    oqs_alg: ''OQS_KEM_alg_RLCE_l5'
+  -
     family: 'BIKE'
     name_group: 'bike1l1cpa'
     bit_security: 128
