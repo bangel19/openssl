@@ -696,7 +696,7 @@ static int add_key_share(SSL *s, WPACKET *pkt, unsigned int curve_id)
 
     /* Create KeyShareEntry */
     if (!WPACKET_put_bytes_u16(pkt, curve_id)
-            || !WPACKET_sub_memcpy_u16(pkt, encoded_point, encodedlen)) {
+            || !WPACKET_sub_memcpy_u32(pkt, encoded_point, encodedlen)) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_ADD_KEY_SHARE,
                  ERR_R_INTERNAL_ERROR);
         goto err;
