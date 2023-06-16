@@ -612,7 +612,7 @@ static int add_key_share(SSL *s, WPACKET *pkt, unsigned int curve_id)
     EVP_PKEY *key_share_key = NULL;
     size_t encodedlen = 0;
     uint16_t classical_encodedlen = 0;
-    uint24_t oqs_encodedlen = 0;
+    uint32_t oqs_encodedlen = 0;
     int do_pqc = IS_OQS_KEM_CURVEID(curve_id); /* 1 if post-quantum alg, 0 otherwise */
     int do_hybrid = IS_OQS_KEM_HYBRID_CURVEID(curve_id); /* 1 if post-quantum hybrid alg, 0 otherwise */
     if (s->s3->tmp.pkey != NULL) {
