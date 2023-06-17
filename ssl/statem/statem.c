@@ -553,11 +553,13 @@ static SUB_STATE_RETURN read_state_machine(SSL *s)
         transition = ossl_statem_server_read_transition;
         process_message = ossl_statem_server_process_message;
         max_message_size = ossl_statem_server_max_message_size;
+        printf("s->server is true where max_message_size = %x\n", max_message_size);
         post_process_message = ossl_statem_server_post_process_message;
     } else {
         transition = ossl_statem_client_read_transition;
         process_message = ossl_statem_client_process_message;
         max_message_size = ossl_statem_client_max_message_size;
+        printf("s->server is false where max_message_size = %x\n", max_message_size);
         post_process_message = ossl_statem_client_post_process_message;
     }
 
