@@ -805,7 +805,7 @@ int tls_construct_extensions(SSL *s, WPACKET *pkt, unsigned int context,
     int min_version, max_version = 0, reason;
     const EXTENSION_DEFINITION *thisexd;
 
-    if (!WPACKET_start_sub_packet_u16(pkt)
+    if (!WPACKET_start_sub_packet_u32(pkt)
                /*
                 * If extensions are of zero length then we don't even add the
                 * extensions length bytes to a ClientHello/ServerHello
