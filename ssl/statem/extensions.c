@@ -588,7 +588,7 @@ int tls_collect_extensions(SSL *s, PACKET *packet, unsigned int context,
         RAW_EXTENSION *thisex;
 
         if (!PACKET_get_net_2(&extensions, &type) ||
-            !PACKET_get_length_prefixed_2(&extensions, &extension)) {
+            !PACKET_get_length_prefixed_4(&extensions, &extension)) {
             SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
                      SSL_R_BAD_EXTENSION);
             goto err;
