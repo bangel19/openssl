@@ -696,7 +696,7 @@ static int add_key_share(SSL *s, WPACKET *pkt, unsigned int curve_id)
 
     /* Create KeyShareEntry */
     if (!WPACKET_put_bytes_u16(pkt, curve_id)
-            || !WPACKET_sub_memcpy_u32(pkt, encoded_point, encodedlen)) {
+            || !WPACKET_sub_memcpy_u24(pkt, encoded_point, encodedlen)) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_ADD_KEY_SHARE,
                  ERR_R_INTERNAL_ERROR);
         goto err;
@@ -732,9 +732,9 @@ EXT_RETURN tls_construct_ctos_key_share(SSL *s, WPACKET *pkt,
     /* key_share extension */
     if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_key_share)
                /* Extension data sub-packet */
-            || !WPACKET_start_sub_packet_u32(pkt)
+            || !WPACKET_start_sub_packet_u24(pkt)
                /* KeyShare list sub-packet */
-            || !WPACKET_start_sub_packet_u32(pkt)) {
+            || !WPACKET_start_sub_packet_u24(pkt)) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_CONSTRUCT_CTOS_KEY_SHARE,
                  ERR_R_INTERNAL_ERROR);
         return EXT_RETURN_FAIL;
