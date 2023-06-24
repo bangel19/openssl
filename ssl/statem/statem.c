@@ -877,7 +877,7 @@ static SUB_STATE_RETURN write_state_machine(SSL *s)
             /* Fall through */
 
         case WRITE_STATE_POST_WORK:
-            printf("  Calling post_work"/n);
+            printf("  Calling post_work\n");
             switch (st->write_state_work = post_work(s, st->write_state_work)) {
             case WORK_ERROR:
                 check_fatal(s, SSL_F_WRITE_STATE_MACHINE);
