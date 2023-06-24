@@ -1204,6 +1204,7 @@ MSG_PROCESS_RETURN ossl_statem_server_process_message(SSL *s, PACKET *pkt)
         return MSG_PROCESS_ERROR;
 
     case TLS_ST_SR_CLNT_HELLO:
+        printf("    Calling tls_process_client_hello within ossl_statem_server_process_message\n");
         return tls_process_client_hello(s, pkt);
 
     case TLS_ST_SR_END_OF_EARLY_DATA:
@@ -1603,6 +1604,7 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
 
     /* Preserve the raw extensions PACKET for later use */
     extensions = clienthello->extensions;
+    printf("      Calling tls_collect_extensions within tls_process_client_hello\n");
     if (!tls_collect_extensions(s, &extensions, SSL_EXT_CLIENT_HELLO,
                                 &clienthello->pre_proc_exts,
                                 &clienthello->pre_proc_exts_len, 1)) {
