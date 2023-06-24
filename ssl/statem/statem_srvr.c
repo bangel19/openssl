@@ -153,6 +153,7 @@ static int ossl_statem_server13_read_transition(SSL *s, int mt)
  */
 int ossl_statem_server_read_transition(SSL *s, int mt)
 {
+    printf("  Calling ossl_statem_server_read_transition\n");
     OSSL_STATEM *st = &s->statem;
 
     if (SSL_IS_TLS13(s)) {
@@ -540,6 +541,7 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL *s)
  */
 WRITE_TRAN ossl_statem_server_write_transition(SSL *s)
 {
+    printf("  Calling ossl_statem_server_write_transition\n");
     OSSL_STATEM *st = &s->statem;
 
     /*
@@ -680,6 +682,7 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL *s)
  */
 WORK_STATE ossl_statem_server_pre_work(SSL *s, WORK_STATE wst)
 {
+    printf("  Calling ossl_statem_server_pre_work\n");
     OSSL_STATEM *st = &s->statem;
 
     switch (st->hand_state) {
@@ -807,6 +810,7 @@ static ossl_inline int conn_is_closed(void)
  */
 WORK_STATE ossl_statem_server_post_work(SSL *s, WORK_STATE wst)
 {
+    printf("  Calling ossl_statem_server_post_work\n");
     OSSL_STATEM *st = &s->statem;
 
     s->init_num = 0;
@@ -1018,6 +1022,7 @@ WORK_STATE ossl_statem_server_post_work(SSL *s, WORK_STATE wst)
 int ossl_statem_server_construct_message(SSL *s, WPACKET *pkt,
                                          confunc_f *confunc, int *mt)
 {
+    printf("  Calling ossl_statem_server_construct_message\n");
     OSSL_STATEM *st = &s->statem;
 
     switch (st->hand_state) {
@@ -1138,6 +1143,7 @@ int ossl_statem_server_construct_message(SSL *s, WPACKET *pkt,
  */
 size_t ossl_statem_server_max_message_size(SSL *s)
 {
+    printf("  Calling ossl_statem_server_max_message_size\n");
     OSSL_STATEM *st = &s->statem;
 
     switch (st->hand_state) {
@@ -1186,6 +1192,7 @@ size_t ossl_statem_server_max_message_size(SSL *s)
  */
 MSG_PROCESS_RETURN ossl_statem_server_process_message(SSL *s, PACKET *pkt)
 {
+    printf("  Calling ossl_statem_server_process_message\n");
     OSSL_STATEM *st = &s->statem;
 
     switch (st->hand_state) {
@@ -1234,6 +1241,7 @@ MSG_PROCESS_RETURN ossl_statem_server_process_message(SSL *s, PACKET *pkt)
  */
 WORK_STATE ossl_statem_server_post_process_message(SSL *s, WORK_STATE wst)
 {
+    printf("  Calling ossl_statem_server_post_process_message\n");
     OSSL_STATEM *st = &s->statem;
 
     switch (st->hand_state) {
