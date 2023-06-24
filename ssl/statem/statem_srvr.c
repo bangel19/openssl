@@ -1152,6 +1152,7 @@ size_t ossl_statem_server_max_message_size(SSL *s)
         return 0;
 
     case TLS_ST_SR_CLNT_HELLO:
+        printf("    return CLIENT_HELLO_MAX_LENGTH\n");
         return CLIENT_HELLO_MAX_LENGTH;
 
     case TLS_ST_SR_END_OF_EARLY_DATA:
