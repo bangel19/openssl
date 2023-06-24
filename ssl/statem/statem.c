@@ -597,9 +597,11 @@ static SUB_STATE_RETURN read_state_machine(SSL *s)
              * Validate that we are allowed to move to the new state and move
              * to that state if so
              */
+            printf("  Calling transition\n");
             if (!transition(s, mt))
                 return SUB_STATE_ERROR;
 
+            printf("  Calling max_message_size\n");
             if (s->s3->tmp.message_size > max_message_size(s)) {
                 SSLfatal(s, SSL_AD_ILLEGAL_PARAMETER, SSL_F_READ_STATE_MACHINE,
                          SSL_R_EXCESSIVE_MESSAGE_SIZE);
@@ -635,6 +637,7 @@ static SUB_STATE_RETURN read_state_machine(SSL *s)
                          ERR_R_INTERNAL_ERROR);
                 return SUB_STATE_ERROR;
             }
+            printf("  Calling process_message\n");
             ret = process_message(s, &pkt);
 
             /* Discard the packet data */
@@ -663,6 +666,7 @@ static SUB_STATE_RETURN read_state_machine(SSL *s)
             break;
 
         case READ_STATE_POST_PROCESS:
+            printf("  Calling post_process_message\n");
             st->read_state_work = post_process_message(s, st->read_state_work);
             switch (st->read_state_work) {
             case WORK_ERROR:
