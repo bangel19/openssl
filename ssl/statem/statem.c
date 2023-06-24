@@ -597,7 +597,7 @@ static SUB_STATE_RETURN read_state_machine(SSL *s)
              * Validate that we are allowed to move to the new state and move
              * to that state if so
              */
-            printf("  Calling transition\n");
+            printf("  Calling transition in read_state_machine\n");
             if (!transition(s, mt))
                 return SUB_STATE_ERROR;
 
@@ -796,6 +796,7 @@ static SUB_STATE_RETURN write_state_machine(SSL *s)
                 else
                     cb(s, SSL_CB_CONNECT_LOOP, 1);
             }
+            printf("  Calling transition in write_state_machine\n");
             switch (transition(s)) {
             case WRITE_TRAN_CONTINUE:
                 st->write_state = WRITE_STATE_PRE_WORK;
@@ -813,6 +814,7 @@ static SUB_STATE_RETURN write_state_machine(SSL *s)
             break;
 
         case WRITE_STATE_PRE_WORK:
+            printf("  Calling pre_work\n");
             switch (st->write_state_work = pre_work(s, st->write_state_work)) {
             case WORK_ERROR:
                 check_fatal(s, SSL_F_WRITE_STATE_MACHINE);
@@ -829,6 +831,7 @@ static SUB_STATE_RETURN write_state_machine(SSL *s)
             case WORK_FINISHED_STOP:
                 return SUB_STATE_END_HANDSHAKE;
             }
+            printf("  Calling get_construct_message_f\n");
             if (!get_construct_message_f(s, &pkt, &confunc, &mt)) {
                 /* SSLfatal() already called */
                 return SUB_STATE_ERROR;
@@ -874,6 +877,7 @@ static SUB_STATE_RETURN write_state_machine(SSL *s)
             /* Fall through */
 
         case WRITE_STATE_POST_WORK:
+            printf("  Calling post_work"/n);
             switch (st->write_state_work = post_work(s, st->write_state_work)) {
             case WORK_ERROR:
                 check_fatal(s, SSL_F_WRITE_STATE_MACHINE);
