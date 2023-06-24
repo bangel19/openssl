@@ -909,6 +909,7 @@ int ossl_statem_client_construct_message(SSL *s, WPACKET *pkt,
         break;
 
     case TLS_ST_CW_CLNT_HELLO:
+        printf("    Calling tls_construct_client_hello\n");
         *confunc = tls_construct_client_hello;
         *mt = SSL3_MT_CLIENT_HELLO;
         break;
@@ -1298,6 +1299,7 @@ int tls_construct_client_hello(SSL *s, WPACKET *pkt)
     }
 
     /* TLS extensions */
+    printf("      Calling tls_construct_extensions within tls_construct_client_hello\n");
     if (!tls_construct_extensions(s, pkt, SSL_EXT_CLIENT_HELLO, NULL, 0)) {
         /* SSLfatal() already called */
         return 0;
