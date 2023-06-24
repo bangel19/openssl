@@ -588,7 +588,7 @@ int tls_collect_extensions(SSL *s, PACKET *packet, unsigned int context,
         RAW_EXTENSION *thisex;
 
         if (!PACKET_get_net_2(&extensions, &type) ||
-            !PACKET_get_length_prefixed_3(&extensions, &extension)) {
+            !PACKET_get_length_prefixed_4(&extensions, &extension)) {
             SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
                      SSL_R_BAD_EXTENSION);
             goto err;
@@ -805,7 +805,7 @@ int tls_construct_extensions(SSL *s, WPACKET *pkt, unsigned int context,
     int min_version, max_version = 0, reason;
     const EXTENSION_DEFINITION *thisexd;
 
-    if (!WPACKET_start_sub_packet_u24(pkt)
+    if (!WPACKET_start_sub_packet_u32(pkt)
                /*
                 * If extensions are of zero length then we don't even add the
                 * extensions length bytes to a ClientHello/ServerHello
