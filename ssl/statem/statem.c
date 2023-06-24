@@ -431,6 +431,7 @@ static int state_machine(SSL *s, int server)
 
     while (st->state != MSG_FLOW_FINISHED) {
         if (st->state == MSG_FLOW_READING) {
+            printf("Calling read_state_machine\n");
             ssret = read_state_machine(s);
             if (ssret == SUB_STATE_FINISHED) {
                 st->state = MSG_FLOW_WRITING;
@@ -440,6 +441,7 @@ static int state_machine(SSL *s, int server)
                 goto end;
             }
         } else if (st->state == MSG_FLOW_WRITING) {
+            printf("Calling write_state_machine\n");
             ssret = write_state_machine(s);
             if (ssret == SUB_STATE_FINISHED) {
                 st->state = MSG_FLOW_READING;
