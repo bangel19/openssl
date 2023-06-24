@@ -724,6 +724,7 @@ EXT_RETURN tls_construct_ctos_key_share(SSL *s, WPACKET *pkt,
                                         unsigned int context, X509 *x,
                                         size_t chainidx)
 {
+   printf("        Calling tls_construct_ctos_key_share\n");
 #ifndef OPENSSL_NO_TLS1_3
     size_t i, num_groups = 0;
     const uint16_t *pgroups = NULL;
@@ -765,6 +766,7 @@ EXT_RETURN tls_construct_ctos_key_share(SSL *s, WPACKET *pkt,
         return EXT_RETURN_FAIL;
     }
 
+    printf("          Calling add_key_share within tls_construct_ctos_key_share\n");
     if (!add_key_share(s, pkt, curve_id)) {
         /* SSLfatal() already called */
         return EXT_RETURN_FAIL;
