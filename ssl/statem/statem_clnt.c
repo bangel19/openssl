@@ -1309,7 +1309,7 @@ int tls_construct_client_hello(SSL *s, WPACKET *pkt)
     return 1;
 }
 
-static void fprintBstring(FILE *fp, const char *S, const uint8_t *A, size_t L) {
+void fprintBstring(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	size_t i;
 	fprintf(fp, "%s", S);
 	for (i = 0; i < L; i++) {
