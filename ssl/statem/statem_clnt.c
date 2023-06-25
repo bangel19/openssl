@@ -1304,8 +1304,21 @@ int tls_construct_client_hello(SSL *s, WPACKET *pkt)
         /* SSLfatal() already called */
         return 0;
     }
-
+    FILE *fh = stdout;
+    fprintBstring(fh, "After tls_construct_extensions, pkt = ", pkt, sizeof(pkt));
     return 1;
+}
+
+static void fprintBstring(FILE *fp, const char *S, const uint8_t *A, size_t L) {
+	size_t i;
+	fprintf(fp, "%s", S);
+	for (i = 0; i < L; i++) {
+		fprintf(fp, "%02X", A[i]);
+	}
+	if (L == 0) {
+		fprintf(fp, "00");
+	}
+	fprintf(fp, "\n");
 }
 
 MSG_PROCESS_RETURN dtls_process_hello_verify(SSL *s, PACKET *pkt)
