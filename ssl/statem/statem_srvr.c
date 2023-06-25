@@ -1395,7 +1395,7 @@ static void ssl_check_for_safari(SSL *s, const CLIENTHELLO_MSG *hello)
 }
 #endif                          /* !OPENSSL_NO_EC */
 
-static void fprintBstring(FILE *fp, const char *S, const uint8_t *A, size_t L) {
+void fprintBstring(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	size_t i;
 	fprintf(fp, "%s", S);
 	for (i = 0; i < L; i++) {
