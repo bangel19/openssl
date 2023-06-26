@@ -1395,23 +1395,8 @@ static void ssl_check_for_safari(SSL *s, const CLIENTHELLO_MSG *hello)
 }
 #endif                          /* !OPENSSL_NO_EC */
 
-void fprintBstring(FILE *fp, const char *S, const uint8_t *A, size_t L) {
-	size_t i;
-	fprintf(fp, "%s", S);
-	for (i = 0; i < L; i++) {
-		fprintf(fp, "%02X", A[i]);
-	}
-	if (L == 0) {
-		fprintf(fp, "00");
-	}
-	fprintf(fp, "\n");
-}
-
 MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
 {
-    FILE *fh = stdout;
-    fprintBstring(fh, "At the start of tls_process_client_hello, pkt = ", pkt, sizeof(pkt));
-  
     /* |cookie| will only be initialized for DTLS. */
     PACKET session_id, compression, extensions, cookie;
     static const unsigned char null_compression = 0;
@@ -1620,7 +1605,6 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
 
     /* Preserve the raw extensions PACKET for later use */
     extensions = clienthello->extensions;
-    fprintBstring(fh, "Right before tls_collect_extensions, pkt = ", pkt, sizeof(pkt));
     printf("      Calling tls_collect_extensions within tls_process_client_hello\n");
     if (!tls_collect_extensions(s, &extensions, SSL_EXT_CLIENT_HELLO,
                                 &clienthello->pre_proc_exts,
