@@ -589,10 +589,10 @@ int tls_collect_extensions(SSL *s, PACKET *packet, unsigned int context,
 
         if (!PACKET_get_net_2(&extensions, &type) ||
             !PACKET_get_length_prefixed_4(&extensions, &extension)) {
-            SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
+           /* SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
                      SSL_R_BAD_EXTENSION);
             goto err;
-        }
+        } */
         /*
          * Verify this extension is allowed. We only check duplicates for
          * extensions that we recognise. We also have a special case for the
@@ -607,6 +607,7 @@ int tls_collect_extensions(SSL *s, PACKET *packet, unsigned int context,
                      SSL_R_BAD_EXTENSION);
             goto err;
         }
+	}
         idx = thisex - raw_extensions;
         /*-
          * Check that we requested this extension (if appropriate). Requests can
