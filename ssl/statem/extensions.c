@@ -603,12 +603,14 @@ int tls_collect_extensions(SSL *s, PACKET *packet, unsigned int context,
                 || (type == TLSEXT_TYPE_psk
                     && (context & SSL_EXT_CLIENT_HELLO) != 0
                     && PACKET_remaining(&extensions) != 0)) {
-            SSLfatal(s, SSL_AD_ILLEGAL_PARAMETER, SSL_F_TLS_COLLECT_EXTENSIONS,
+           /* SSLfatal(s, SSL_AD_ILLEGAL_PARAMETER, SSL_F_TLS_COLLECT_EXTENSIONS,
                      SSL_R_BAD_EXTENSION);
             goto err;
         }
-	}
+	} */
         idx = thisex - raw_extensions;
+	}
+	}
         /*-
          * Check that we requested this extension (if appropriate). Requests can
          * be sent in the ClientHello and CertificateRequest. Unsolicited
