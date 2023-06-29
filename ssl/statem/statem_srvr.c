@@ -1694,9 +1694,9 @@ static int tls_early_post_process_client_hello(SSL *s)
     }
 
     /* if (protverr) {
-        if (SSL_IS_FIRST_HANDSHAKE(s)) {
+        if (SSL_IS_FIRST_HANDSHAKE(s)) { */
             /* like ssl3_get_record, send alert using remote version number */
-            s->version = s->client_version = clienthello->legacy_version;
+       /*     s->version = s->client_version = clienthello->legacy_version;
         }
         SSLfatal(s, SSL_AD_PROTOCOL_VERSION,
                  SSL_F_TLS_EARLY_POST_PROCESS_CLIENT_HELLO, protverr);
