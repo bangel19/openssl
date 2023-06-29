@@ -1255,6 +1255,7 @@ WORK_STATE ossl_statem_server_post_process_message(SSL *s, WORK_STATE wst)
         return WORK_ERROR;
 
     case TLS_ST_SR_CLNT_HELLO:
+        printf("    Calling tls_post_process_client_hello\n");
         return tls_post_process_client_hello(s, wst);
 
     case TLS_ST_SR_KEY_EXCH:
@@ -1813,6 +1814,7 @@ static int tls_early_post_process_client_hello(SSL *s)
     }
 
     /* We need to do this before getting the session */
+    printf("        Calling tls_parse_extension within tls_early_post_process_client_hello\n");
     if (!tls_parse_extension(s, TLSEXT_IDX_extended_master_secret,
                              SSL_EXT_CLIENT_HELLO,
                              clienthello->pre_proc_exts, NULL, 0)) {
@@ -1919,6 +1921,7 @@ static int tls_early_post_process_client_hello(SSL *s)
 #endif                          /* !OPENSSL_NO_EC */
 
     /* TLS extensions */
+    printf("        Calling tls_parse_all_extensions within tls_early_post_process_client_hello\n");
     if (!tls_parse_all_extensions(s, SSL_EXT_CLIENT_HELLO,
                                   clienthello->pre_proc_exts, NULL, 0, 1)) {
         /* SSLfatal() already called */
@@ -2263,6 +2266,7 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
     const SSL_CIPHER *cipher;
 
     if (wst == WORK_MORE_A) {
+        printf("      Calling tls_early_post_process_client_hello in tls_post_process_client_hello\n");
         int rv = tls_early_post_process_client_hello(s);
         if (rv == 0) {
             /* SSLfatal() was already called */
