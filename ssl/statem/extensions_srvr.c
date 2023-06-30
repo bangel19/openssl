@@ -233,11 +233,11 @@ int tls_parse_ctos_srp(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
 
     if (!PACKET_as_length_prefixed_1(pkt, &srp_I)
             || PACKET_contains_zero_byte(&srp_I)) {
-        SSLfatal(s, SSL_AD_DECODE_ERROR,
+      /*  SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_SRP,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    }
+    } */
 
     /*
      * TODO(openssl-team): currently, we re-authenticate the user
@@ -247,6 +247,7 @@ int tls_parse_ctos_srp(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PARSE_CTOS_SRP,
                  ERR_R_INTERNAL_ERROR);
         return 0;
+    }
     }
 
     return 1;
