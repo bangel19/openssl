@@ -128,20 +128,20 @@ int tls_parse_ctos_server_name(SSL *s, PACKET *pkt, unsigned int context,
      * Also note that the RFC permits only one SNI value per type,
      * i.e., we can only have a single hostname.
      */
-    if (!PACKET_get_1(&sni, &servname_type)
+    /* if (!PACKET_get_1(&sni, &servname_type)
         || servname_type != TLSEXT_NAMETYPE_host_name
         || !PACKET_as_length_prefixed_2(&sni, &hostname)) {
         SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    }
+    } */
 
     /*
      * In TLSv1.2 and below the SNI is associated with the session. In TLSv1.3
      * we always use the SNI value from the handshake.
      */
     if (!s->hit || SSL_IS_TLS13(s)) {
-        if (PACKET_remaining(&hostname) > TLSEXT_MAXLEN_host_name) {
+      /*  if (PACKET_remaining(&hostname) > TLSEXT_MAXLEN_host_name) {
             SSLfatal(s, SSL_AD_UNRECOGNIZED_NAME,
                      SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
                      SSL_R_BAD_EXTENSION);
@@ -153,19 +153,19 @@ int tls_parse_ctos_server_name(SSL *s, PACKET *pkt, unsigned int context,
                      SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
                      SSL_R_BAD_EXTENSION);
             return 0;
-        }
+        } */
 
         /*
          * Store the requested SNI in the SSL as temporary storage.
          * If we accept it, it will get stored in the SSL_SESSION as well.
          */
-        OPENSSL_free(s->ext.hostname);
+       /* OPENSSL_free(s->ext.hostname);
         s->ext.hostname = NULL;
         if (!PACKET_strndup(&hostname, &s->ext.hostname)) {
             SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
                      ERR_R_INTERNAL_ERROR);
             return 0;
-        }
+        } */
 
         s->servername_done = 1;
     } else {
@@ -178,9 +178,9 @@ int tls_parse_ctos_server_name(SSL *s, PACKET *pkt, unsigned int context,
          * TODO(openssl-team): if the SNI doesn't match, we MUST
          * fall back to a full handshake.
          */
-        s->servername_done = (s->session->ext.hostname != NULL)
-            && PACKET_equal(&hostname, s->session->ext.hostname,
-                            strlen(s->session->ext.hostname));
+        s->servername_done = (s->session->ext.hostname != NULL);
+          /*  && PACKET_equal(&hostname, s->session->ext.hostname,
+                            strlen(s->session->ext.hostname)); */
     }
 
     return 1;
