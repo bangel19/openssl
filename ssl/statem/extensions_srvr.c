@@ -109,13 +109,13 @@ int tls_parse_ctos_server_name(SSL *s, PACKET *pkt, unsigned int context,
     unsigned int servname_type;
     PACKET sni, hostname;
 
-    if (!PACKET_as_length_prefixed_2(pkt, &sni)
+    /* if (!PACKET_as_length_prefixed_2(pkt, &sni) */
         /* ServerNameList must be at least 1 byte long. */
-        || PACKET_remaining(&sni) == 0) {
+    /*    || PACKET_remaining(&sni) == 0) {
         SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    }
+    } */
 
     /*
      * Although the intent was for server_name to be extensible, RFC 4366
@@ -1061,10 +1061,10 @@ int tls_parse_ctos_ems(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
 {
    printf("tls_parse_ctos_ems  starts to execute\n");
     /* The extension must always be empty */
-    if (PACKET_remaining(pkt) != 0) {
+   /* if (PACKET_remaining(pkt) != 0) {
         SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_EMS, SSL_R_BAD_EXTENSION);
-        return 0;
+        return 0; */
     }
 
     s->s3->flags |= TLS1_FLAGS_RECEIVED_EXTMS;
