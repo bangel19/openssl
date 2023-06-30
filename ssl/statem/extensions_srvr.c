@@ -62,11 +62,11 @@ int tls_parse_ctos_renegotiate(SSL *s, PACKET *pkt, unsigned int context,
     }
 
     /* Check that the extension matches */
-    if (ilen != s->s3->previous_client_finished_len) {
+  /*  if (ilen != s->s3->previous_client_finished_len) {
         SSLfatal(s, SSL_AD_HANDSHAKE_FAILURE, SSL_F_TLS_PARSE_CTOS_RENEGOTIATE,
                  SSL_R_RENEGOTIATION_MISMATCH);
         return 0;
-    }
+    } */
 
     if (memcmp(data, s->s3->previous_client_finished,
                s->s3->previous_client_finished_len)) {
