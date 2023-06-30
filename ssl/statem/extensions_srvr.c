@@ -1033,10 +1033,10 @@ int tls_parse_ctos_supported_groups(SSL *s, PACKET *pkt, unsigned int context,
     if (!PACKET_as_length_prefixed_2(pkt, &supported_groups_list)
             || PACKET_remaining(&supported_groups_list) == 0
             || (PACKET_remaining(&supported_groups_list) % 2) != 0) {
-        SSLfatal(s, SSL_AD_DECODE_ERROR,
+       /* SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_SUPPORTED_GROUPS, SSL_R_BAD_EXTENSION);
         return 0;
-    }
+    } */
 
     if (!s->hit || SSL_IS_TLS13(s)) {
         OPENSSL_free(s->ext.peer_supportedgroups);
@@ -1045,11 +1045,13 @@ int tls_parse_ctos_supported_groups(SSL *s, PACKET *pkt, unsigned int context,
         if (!tls1_save_u16(&supported_groups_list,
                            &s->ext.peer_supportedgroups,
                            &s->ext.peer_supportedgroups_len)) {
-            SSLfatal(s, SSL_AD_INTERNAL_ERROR,
+           /* SSLfatal(s, SSL_AD_INTERNAL_ERROR,
                      SSL_F_TLS_PARSE_CTOS_SUPPORTED_GROUPS,
                      ERR_R_INTERNAL_ERROR);
-            return 0;
+            return 0; */
+            return 1;
         }
+    }
     }
 
     return 1;
