@@ -491,6 +491,7 @@ int tls_parse_ctos_alpn(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
         /* Protocol names can't be empty. */
         if (!PACKET_get_length_prefixed_1(&protocol_list, &protocol)
                 || PACKET_remaining(&protocol) == 0) {
+            printf("do-while loop is executing in tls_parse_ctos_alpn\n");
             SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_ALPN,
                      SSL_R_BAD_EXTENSION);
             return 0;
