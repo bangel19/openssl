@@ -244,9 +244,9 @@ int tls_parse_ctos_srp(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
      * upon resumption. Instead, we MUST ignore the login.
      */
     if (!PACKET_strndup(&srp_I, &s->srp_ctx.login)) {
-        SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PARSE_CTOS_SRP,
-                 ERR_R_INTERNAL_ERROR);
-        return 0;
+        /* SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PARSE_CTOS_SRP,
+                 ERR_R_INTERNAL_ERROR); */
+        return 1;
     }
     }
 
