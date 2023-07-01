@@ -199,12 +199,12 @@ int tls_parse_ctos_maxfragmentlen(SSL *s, PACKET *pkt, unsigned int context,
 
     /* Received |value| should be a valid max-fragment-length code. */
     if (!IS_MAX_FRAGMENT_LENGTH_EXT_VALID(value)) {
-        SSLfatal(s, SSL_AD_ILLEGAL_PARAMETER,
+     /*   SSLfatal(s, SSL_AD_ILLEGAL_PARAMETER,
                  SSL_F_TLS_PARSE_CTOS_MAXFRAGMENTLEN,
                  SSL_R_SSL3_EXT_INVALID_MAX_FRAGMENT_LENGTH);
         return 0;
     }
-    }
+    } */
 
     /*
      * RFC 6066:  The negotiated length applies for the duration of the session
@@ -216,6 +216,9 @@ int tls_parse_ctos_maxfragmentlen(SSL *s, PACKET *pkt, unsigned int context,
                  SSL_F_TLS_PARSE_CTOS_MAXFRAGMENTLEN,
                  SSL_R_SSL3_EXT_INVALID_MAX_FRAGMENT_LENGTH);
         return 0;
+    }
+
+    }
     }
 
     /*
