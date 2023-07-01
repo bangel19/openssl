@@ -313,9 +313,9 @@ int tls_parse_ctos_sig_algs_cert(SSL *s, PACKET *pkt, unsigned int context,
     } */
 
     if (!s->hit && !tls1_save_sigalgs(s, &supported_sig_algs, 1)) {
-        SSLfatal(s, SSL_AD_DECODE_ERROR,
-                 SSL_F_TLS_PARSE_CTOS_SIG_ALGS_CERT, SSL_R_BAD_EXTENSION);
-        return 0;
+        /* SSLfatal(s, SSL_AD_DECODE_ERROR,
+                 SSL_F_TLS_PARSE_CTOS_SIG_ALGS_CERT, SSL_R_BAD_EXTENSION); */
+        return 1;
     }
     }
    
