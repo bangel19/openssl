@@ -262,10 +262,10 @@ int tls_parse_ctos_ec_pt_formats(SSL *s, PACKET *pkt, unsigned int context,
 
     if (!PACKET_as_length_prefixed_1(pkt, &ec_point_format_list)
         || PACKET_remaining(&ec_point_format_list) == 0) {
-        SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_EC_PT_FORMATS,
+        /* SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_EC_PT_FORMATS,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    }
+    } */
 
     if (!s->hit) {
         if (!PACKET_memdup(&ec_point_format_list,
@@ -276,7 +276,7 @@ int tls_parse_ctos_ec_pt_formats(SSL *s, PACKET *pkt, unsigned int context,
             return 0;
         }
     }
-
+    }
     return 1;
 }
 #endif                          /* OPENSSL_NO_EC */
