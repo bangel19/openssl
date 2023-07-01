@@ -625,6 +625,7 @@ int tls_parse_ctos_psk_kex_modes(SSL *s, PACKET *pkt, unsigned int context,
 int tls_parse_ctos_key_share(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
                              size_t chainidx)
 {
+   printf("          tls_parse_ctos_key_share   starts to execute\n");
 #ifndef OPENSSL_NO_TLS1_3
     unsigned int group_id;
     PACKET key_share_list, encoded_pt;
