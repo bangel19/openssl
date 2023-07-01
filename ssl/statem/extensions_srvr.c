@@ -481,10 +481,10 @@ int tls_parse_ctos_alpn(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
 
     if (!PACKET_as_length_prefixed_2(pkt, &protocol_list)
         || PACKET_remaining(&protocol_list) < 2) {
-        SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_ALPN,
+       /* SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_ALPN,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    }
+    } */
 
     save_protocol_list = protocol_list;
     do {
@@ -506,7 +506,7 @@ int tls_parse_ctos_alpn(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
                  ERR_R_INTERNAL_ERROR);
         return 0;
     }
-
+    }
     return 1;
 }
 
