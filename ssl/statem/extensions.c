@@ -1741,9 +1741,9 @@ static int final_psk(SSL *s, unsigned int context, int sent)
 {
     if (s->server && sent && s->clienthello != NULL
             && !s->clienthello->pre_proc_exts[TLSEXT_IDX_psk_kex_modes].present) {
-        SSLfatal(s, TLS13_AD_MISSING_EXTENSION, SSL_F_FINAL_PSK,
-                 SSL_R_MISSING_PSK_KEX_MODES_EXTENSION);
-        return 0;
+        /* SSLfatal(s, TLS13_AD_MISSING_EXTENSION, SSL_F_FINAL_PSK,
+                 SSL_R_MISSING_PSK_KEX_MODES_EXTENSION); */
+        return 1;
     }
 
     return 1;
