@@ -2295,7 +2295,7 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
             }
 
             /* In TLSv1.3 we selected the ciphersuite before resumption */
-            if (!SSL_IS_TLS13(s)) {
+           /* if (!SSL_IS_TLS13(s)) {
                 cipher =
                     ssl3_choose_cipher(s, s->peer_ciphers, SSL_get_ciphers(s));
 
@@ -2306,7 +2306,7 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
                     goto err;
                 }
                 s->s3->tmp.new_cipher = cipher;
-            }
+            } */
             if (!s->hit) {
                 if (!tls_choose_sigalg(s, 1)) {
                     /* SSLfatal already called */
