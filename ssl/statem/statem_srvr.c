@@ -2308,7 +2308,7 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
                 s->s3->tmp.new_cipher = cipher;
             } */
             if (!s->hit) {
-                if (!tls_choose_sigalg(s, 1)) {
+              //  if (!tls_choose_sigalg(s, 1)) {
                     /* SSLfatal already called */
                    /* goto err;
                 } */
@@ -2321,7 +2321,7 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
                 if (s->session->not_resumable)
                     /* do not send a session ticket */
                     s->ext.ticket_expected = 0;
-                }
+           //     }
             }
         } else {
             /* Session-id reuse */
