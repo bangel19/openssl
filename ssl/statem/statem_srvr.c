@@ -2367,20 +2367,20 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
     }
 #ifndef OPENSSL_NO_SRP
     if (wst == WORK_MORE_C) {
-        int ret;
+     //   int ret;
         printf("Sixth stopping point\n");
-        if ((ret = ssl_check_srp_ext_ClientHello(s)) == 0) {
+       /* if ((ret = ssl_check_srp_ext_ClientHello(s)) == 0) { */
             /*
              * callback indicates further work to be done
              */
-            s->rwstate = SSL_X509_LOOKUP;
+        /*    s->rwstate = SSL_X509_LOOKUP;
             return WORK_MORE_C;
-        }
+        } */
         printf("Seventh stopping point\n");
-        if (ret < 0) {
+    /*    if (ret < 0) { */
             /* SSLfatal() already called */
-            goto err;
-        }
+     /*       goto err;
+        } */
        printf("Eighth stopping point\n");
     }
 #endif
