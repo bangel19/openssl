@@ -2408,6 +2408,7 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
 
 int tls_construct_server_hello(SSL *s, WPACKET *pkt)
 {
+    printf("    Executing tls_construct_server_hello\n");
     int compm;
     size_t sl, len;
     int version;
