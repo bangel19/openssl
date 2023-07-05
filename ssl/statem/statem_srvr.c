@@ -1027,7 +1027,6 @@ int ossl_statem_server_construct_message(SSL *s, WPACKET *pkt,
 
     switch (st->hand_state) {
     default:
-        printf("  default called\n");
         /* Shouldn't happen */
         SSLfatal(s, SSL_AD_INTERNAL_ERROR,
                  SSL_F_OSSL_STATEM_SERVER_CONSTRUCT_MESSAGE,
@@ -1035,7 +1034,6 @@ int ossl_statem_server_construct_message(SSL *s, WPACKET *pkt,
         return 0;
 
     case TLS_ST_SW_CHANGE:
-        printf("  case: TLS_ST_SW_CHANGE\n");
         if (SSL_IS_DTLS(s))
             *confunc = dtls_construct_change_cipher_spec;
         else
@@ -1044,13 +1042,11 @@ int ossl_statem_server_construct_message(SSL *s, WPACKET *pkt,
         break;
 
     case DTLS_ST_SW_HELLO_VERIFY_REQUEST:
-        printf("  case: DTLS_ST_SW_HELLO_VERIFY_REQUEST\n");
         *confunc = dtls_construct_hello_verify_request;
         *mt = DTLS1_MT_HELLO_VERIFY_REQUEST;
         break;
 
     case TLS_ST_SW_HELLO_REQ:
-        printf("  case: TLS_ST_SW_HELLO_REQ\n");
         /* No construction function needed */
         *confunc = NULL;
         *mt = SSL3_MT_HELLO_REQUEST;
@@ -1063,68 +1059,57 @@ int ossl_statem_server_construct_message(SSL *s, WPACKET *pkt,
         break;
 
     case TLS_ST_SW_CERT:
-        printf("  case: TLS_ST_SW_CERT\n");
         *confunc = tls_construct_server_certificate;
         *mt = SSL3_MT_CERTIFICATE;
         break;
 
     case TLS_ST_SW_CERT_VRFY:
-        printf("  case: TLS_ST_SW_CERT_VRFY\n");
         *confunc = tls_construct_cert_verify;
         *mt = SSL3_MT_CERTIFICATE_VERIFY;
         break;
 
 
     case TLS_ST_SW_KEY_EXCH:
-        printf("  case: TLS_ST_SW_KEY_EXCH\n");
         *confunc = tls_construct_server_key_exchange;
         *mt = SSL3_MT_SERVER_KEY_EXCHANGE;
         break;
 
     case TLS_ST_SW_CERT_REQ:
-        printf("  case: TLS_ST_SW_CERT_REQ\n");
         *confunc = tls_construct_certificate_request;
         *mt = SSL3_MT_CERTIFICATE_REQUEST;
         break;
 
     case TLS_ST_SW_SRVR_DONE:
-        printf("  case: TLS_ST_SW_SRVR_DONE\n");
         *confunc = tls_construct_server_done;
         *mt = SSL3_MT_SERVER_DONE;
         break;
 
     case TLS_ST_SW_SESSION_TICKET:
-        printf("  case: TLS_ST_SW_SESSION_TICKET\n");
         *confunc = tls_construct_new_session_ticket;
         *mt = SSL3_MT_NEWSESSION_TICKET;
         break;
 
     case TLS_ST_SW_CERT_STATUS:
-        printf("  case: TLS_ST_SW_CERT_STATUS\n");
         *confunc = tls_construct_cert_status;
         *mt = SSL3_MT_CERTIFICATE_STATUS;
         break;
 
     case TLS_ST_SW_FINISHED:
-        printf("  case: TLS_ST_SW_FINISHED\n");
         *confunc = tls_construct_finished;
         *mt = SSL3_MT_FINISHED;
         break;
 
     case TLS_ST_EARLY_DATA:
-        printf("  case: TLS_ST_EARLY_DATA\n");
         *confunc = NULL;
         *mt = SSL3_MT_DUMMY;
         break;
 
     case TLS_ST_SW_ENCRYPTED_EXTENSIONS:
-        printf("  case: TLS_ST_SW_ENCRYPTED_EXTENSIONS\n");
         *confunc = tls_construct_encrypted_extensions;
         *mt = SSL3_MT_ENCRYPTED_EXTENSIONS;
         break;
 
     case TLS_ST_SW_KEY_UPDATE:
-        printf("  case: TLS_ST_SW_KEY_UPDATE\n");
         *confunc = tls_construct_key_update;
         *mt = SSL3_MT_KEY_UPDATE;
         break;
