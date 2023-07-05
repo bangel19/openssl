@@ -1765,6 +1765,7 @@ EXT_RETURN tls_construct_stoc_key_share(SSL *s, WPACKET *pkt,
                                         unsigned int context, X509 *x,
                                         size_t chainidx)
 {
+   printf("      Executing tls_construct_stoc_key_share\n");
 #ifndef OPENSSL_NO_TLS1_3
     unsigned char *encodedPoint = NULL, *classical_encodedPoint = NULL, *oqs_encodedPoint = NULL;
     size_t encoded_pt_len = 0;
