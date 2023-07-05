@@ -2390,9 +2390,11 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
     size_t sl, len;
     int version;
     unsigned char *session_id;
+    printf("    Stopping point 1 in tls_construct_server_hello\n");
     int usetls13 = SSL_IS_TLS13(s) || s->hello_retry_request == SSL_HRR_PENDING;
 
     version = usetls13 ? TLS1_2_VERSION : s->version;
+    printf("    Stopping point 2 in tls_construct_server_hello\n");
     if (!WPACKET_put_bytes_u16(pkt, version)
                /*
                 * Random stuff. Filling of the server_random takes place in
@@ -2406,7 +2408,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
                  ERR_R_INTERNAL_ERROR);
         return 0;
     }
-
+    printf("    Stopping point 3 in tls_construct_server_hello\n");
     /*-
      * There are several cases for the session ID to send
      * back in the server hello:
@@ -2429,7 +2431,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
         (!(s->ctx->session_cache_mode & SSL_SESS_CACHE_SERVER)
          && !s->hit))
         s->session->session_id_length = 0;
-
+    printf("    Stopping point 4 in tls_construct_server_hello\n");
     if (usetls13) {
         sl = s->tmp_session_id_len;
         session_id = s->tmp_session_id;
@@ -2437,13 +2439,13 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
         sl = s->session->session_id_length;
         session_id = s->session->session_id;
     }
-
+    printf("    Stopping point 5 in tls_construct_server_hello\n");
     if (sl > sizeof(s->session->session_id)) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_CONSTRUCT_SERVER_HELLO,
                  ERR_R_INTERNAL_ERROR);
         return 0;
     }
-
+    printf("    Stopping point 6 in tls_construct_server_hello\n");
     /* set up the compression method */
 #ifdef OPENSSL_NO_COMP
     compm = 0;
@@ -2453,7 +2455,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
     else
         compm = s->s3->tmp.new_compression->id;
 #endif
-
+   printf("    Stopping point 7 in tls_construct_server_hello\n");
     if (!WPACKET_sub_memcpy_u8(pkt, session_id, sl)
             || !s->method->put_cipher_by_char(s->s3->tmp.new_cipher, pkt, &len)
             || !WPACKET_put_bytes_u8(pkt, compm)) {
@@ -2461,7 +2463,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
                  ERR_R_INTERNAL_ERROR);
         return 0;
     }
-
+   printf("    Stopping point 8 in tls_construct_server_hello\n");
     if (!tls_construct_extensions(s, pkt,
                                   s->hello_retry_request == SSL_HRR_PENDING
                                       ? SSL_EXT_TLS1_3_HELLO_RETRY_REQUEST
@@ -2472,13 +2474,13 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
         /* SSLfatal() already called */
         return 0;
     }
-
+   printf("    Stopping point 9 in tls_construct_server_hello\n");
     if (s->hello_retry_request == SSL_HRR_PENDING) {
         /* Ditch the session. We'll create a new one next time around */
         SSL_SESSION_free(s->session);
         s->session = NULL;
         s->hit = 0;
-
+        printf("    Stopping point 10 in tls_construct_server_hello\n");
         /*
          * Re-initialise the Transcript Hash. We're going to prepopulate it with
          * a synthetic message_hash in place of ClientHello1.
@@ -2487,12 +2489,13 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
             /* SSLfatal() already called */
             return 0;
         }
+      printf("    Stopping point 11 in tls_construct_server_hello\n");
     } else if (!(s->verify_mode & SSL_VERIFY_PEER)
                 && !ssl3_digest_cached_records(s, 0)) {
         /* SSLfatal() already called */;
         return 0;
     }
-
+    printf("    Stopping point 12 in tls_construct_server_hello\n");
     return 1;
 }
 
