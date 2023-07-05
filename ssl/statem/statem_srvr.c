@@ -2457,7 +2457,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
 #endif
    printf("    Stopping point 7 in tls_construct_server_hello\n");
     if (!WPACKET_sub_memcpy_u8(pkt, session_id, sl)
-            || !s->method->put_cipher_by_char(s->s3->tmp.new_cipher, pkt, &len)
+         //   || !s->method->put_cipher_by_char(s->s3->tmp.new_cipher, pkt, &len)
             || !WPACKET_put_bytes_u8(pkt, compm)) {
        /* SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_CONSTRUCT_SERVER_HELLO,
                  ERR_R_INTERNAL_ERROR);
