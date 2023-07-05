@@ -2314,13 +2314,11 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
                    /* goto err;
                 } */
                 /* check whether we should disable session resumption */
-                printf("First stopping point\n");
                 if (s->not_resumable_session_cb != NULL)
                     s->session->not_resumable =
                         s->not_resumable_session_cb(s,
                             ((s->s3->tmp.new_cipher->algorithm_mkey
                               & (SSL_kDHE | SSL_kECDHE)) != 0));
-                printf("Second stopping point\n");
                 if (s->session->not_resumable)
                     /* do not send a session ticket */
                     s->ext.ticket_expected = 0;
@@ -2347,12 +2345,10 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
          * Call status_request callback if needed. Has to be done after the
          * certificate callbacks etc above.
          */
-        printf("Third stopping point\n");
         if (!tls_handle_status_request(s)) {
             /* SSLfatal() already called */
             goto err;
         }
-        printf("Fourth stopping point\n");
         /*
          * Call alpn_select callback if needed.  Has to be done after SNI and
          * cipher negotiation (HTTP/2 restricts permitted ciphers). In TLSv1.3
@@ -2363,13 +2359,11 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
             /* SSLfatal() already called */
             goto err;
         }
-        printf("Fifth stopping point\n");
         wst = WORK_MORE_C;
     }
 #ifndef OPENSSL_NO_SRP
     if (wst == WORK_MORE_C) {
      //   int ret;
-        printf("Sixth stopping point\n");
        /* if ((ret = ssl_check_srp_ext_ClientHello(s)) == 0) { */
             /*
              * callback indicates further work to be done
@@ -2377,12 +2371,10 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
         /*    s->rwstate = SSL_X509_LOOKUP;
             return WORK_MORE_C;
         } */
-        printf("Seventh stopping point\n");
     /*    if (ret < 0) { */
             /* SSLfatal() already called */
      /*       goto err;
         } */
-       printf("Eighth stopping point\n");
     }
 #endif
 
