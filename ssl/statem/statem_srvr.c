@@ -2464,6 +2464,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
         return 0;
     } */
    printf("    Stopping point 8 in tls_construct_server_hello\n");
+    }
    printf("    Calling tls_construct_extensions in tls_construct_server_hello\n");
     if (!tls_construct_extensions(s, pkt,
                                   s->hello_retry_request == SSL_HRR_PENDING
@@ -2475,7 +2476,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
         /* SSLfatal() already called */
         return 0;
     }
-    }
+   // }
    printf("    Stopping point 9 in tls_construct_server_hello\n");
     if (s->hello_retry_request == SSL_HRR_PENDING) {
         /* Ditch the session. We'll create a new one next time around */
