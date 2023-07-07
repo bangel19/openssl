@@ -1467,26 +1467,31 @@ EXT_RETURN tls_construct_stoc_ec_pt_formats(SSL *s, WPACKET *pkt,
                                             unsigned int context, X509 *x,
                                             size_t chainidx)
 {
+    printf("first stopping point in   tls_construct_stoc_ec_pt_formats\n");
     unsigned long alg_k = s->s3->tmp.new_cipher->algorithm_mkey;
+    printf("Second stopping point in   tls_construct_stoc_ec_pt_formats\n");
     unsigned long alg_a = s->s3->tmp.new_cipher->algorithm_auth;
+    printf("Third stopping point in   tls_construct_stoc_ec_pt_formats\n");
     int using_ecc = ((alg_k & SSL_kECDHE) || (alg_a & SSL_aECDSA))
                     && (s->ext.peer_ecpointformats != NULL);
     const unsigned char *plist;
     size_t plistlen;
-
+    printf("Fourth stopping point in   tls_construct_stoc_ec_pt_formats\n");
     if (!using_ecc)
         return EXT_RETURN_NOT_SENT;
-
+    printf("Fifth stopping point in   tls_construct_stoc_ec_pt_formats\n");
     tls1_get_formatlist(s, &plist, &plistlen);
+    printf("Sixth stopping point in   tls_construct_stoc_ec_pt_formats\n");
     if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_ec_point_formats)
             || !WPACKET_start_sub_packet_u16(pkt)
             || !WPACKET_sub_memcpy_u8(pkt, plist, plistlen)
             || !WPACKET_close(pkt)) {
+        printf("Seventh stopping point in   tls_construct_stoc_ec_pt_formats\n");
         SSLfatal(s, SSL_AD_INTERNAL_ERROR,
                  SSL_F_TLS_CONSTRUCT_STOC_EC_PT_FORMATS, ERR_R_INTERNAL_ERROR);
         return EXT_RETURN_FAIL;
     }
-
+    printf("Eigth stopping point in   tls_construct_stoc_ec_pt_formats\n");
     return EXT_RETURN_SENT;
 }
 #endif
