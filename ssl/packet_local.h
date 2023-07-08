@@ -651,7 +651,7 @@ __owur static ossl_inline int PACKET_as_length_prefixed_4(PACKET *pkt,
     const unsigned char *data;
     PACKET tmp = *pkt;
     if (!PACKET_get_net_4(&tmp, &length) ||
-        !PACKET_get_bytes(&tmp, &data, (size_t)length)) ||
+        !PACKET_get_bytes(&tmp, &data, (size_t)length) ||
         PACKET_remaining(&tmp) != 0) {
         return 0;
     }
