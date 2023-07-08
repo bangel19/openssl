@@ -1486,7 +1486,7 @@ MSG_PROCESS_RETURN tls_process_server_hello(SSL *s, PACKET *pkt)
     /* TLS extensions */
     if (PACKET_remaining(pkt) == 0 && !hrr) {
         PACKET_null_init(&extpkt);
-    } else if (!PACKET_as_length_prefixed_2(pkt, &extpkt)
+    } else if (!PACKET_as_length_prefixed_4(pkt, &extpkt)
                || PACKET_remaining(pkt) != 0) {
         SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_SERVER_HELLO,
                  SSL_R_BAD_LENGTH);
