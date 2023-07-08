@@ -62,11 +62,11 @@ int tls_parse_ctos_renegotiate(SSL *s, PACKET *pkt, unsigned int context,
     }
 
     /* Check that the extension matches */
-  /*  if (ilen != s->s3->previous_client_finished_len) {
+    if (ilen != s->s3->previous_client_finished_len) {
         SSLfatal(s, SSL_AD_HANDSHAKE_FAILURE, SSL_F_TLS_PARSE_CTOS_RENEGOTIATE,
                  SSL_R_RENEGOTIATION_MISMATCH);
         return 0;
-    } */
+    }
 
     if (memcmp(data, s->s3->previous_client_finished,
                s->s3->previous_client_finished_len)) {
@@ -109,13 +109,13 @@ int tls_parse_ctos_server_name(SSL *s, PACKET *pkt, unsigned int context,
     unsigned int servname_type;
     PACKET sni, hostname;
 
-    /* if (!PACKET_as_length_prefixed_2(pkt, &sni) */
+     if (!PACKET_as_length_prefixed_2(pkt, &sni)
         /* ServerNameList must be at least 1 byte long. */
-    /*    || PACKET_remaining(&sni) == 0) {
+        || PACKET_remaining(&sni) == 0) {
         SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    } */
+    }
 
     /*
      * Although the intent was for server_name to be extensible, RFC 4366
@@ -128,20 +128,20 @@ int tls_parse_ctos_server_name(SSL *s, PACKET *pkt, unsigned int context,
      * Also note that the RFC permits only one SNI value per type,
      * i.e., we can only have a single hostname.
      */
-    /* if (!PACKET_get_1(&sni, &servname_type)
+    if (!PACKET_get_1(&sni, &servname_type)
         || servname_type != TLSEXT_NAMETYPE_host_name
         || !PACKET_as_length_prefixed_2(&sni, &hostname)) {
         SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    } */
+    }
 
     /*
      * In TLSv1.2 and below the SNI is associated with the session. In TLSv1.3
      * we always use the SNI value from the handshake.
      */
     if (!s->hit || SSL_IS_TLS13(s)) {
-      /*  if (PACKET_remaining(&hostname) > TLSEXT_MAXLEN_host_name) {
+        if (PACKET_remaining(&hostname) > TLSEXT_MAXLEN_host_name) {
             SSLfatal(s, SSL_AD_UNRECOGNIZED_NAME,
                      SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
                      SSL_R_BAD_EXTENSION);
@@ -153,19 +153,19 @@ int tls_parse_ctos_server_name(SSL *s, PACKET *pkt, unsigned int context,
                      SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
                      SSL_R_BAD_EXTENSION);
             return 0;
-        } */
+        }
 
         /*
          * Store the requested SNI in the SSL as temporary storage.
          * If we accept it, it will get stored in the SSL_SESSION as well.
          */
-       /* OPENSSL_free(s->ext.hostname);
+        OPENSSL_free(s->ext.hostname);
         s->ext.hostname = NULL;
         if (!PACKET_strndup(&hostname, &s->ext.hostname)) {
             SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
                      ERR_R_INTERNAL_ERROR);
             return 0;
-        } */
+        }
 
         s->servername_done = 1;
     } else {
@@ -178,9 +178,9 @@ int tls_parse_ctos_server_name(SSL *s, PACKET *pkt, unsigned int context,
          * TODO(openssl-team): if the SNI doesn't match, we MUST
          * fall back to a full handshake.
          */
-        s->servername_done = (s->session->ext.hostname != NULL);
-          /*  && PACKET_equal(&hostname, s->session->ext.hostname,
-                            strlen(s->session->ext.hostname)); */
+        s->servername_done = (s->session->ext.hostname != NULL)
+            && PACKET_equal(&hostname, s->session->ext.hostname,
+                            strlen(s->session->ext.hostname));
     }
 
     return 1;
@@ -192,19 +192,18 @@ int tls_parse_ctos_maxfragmentlen(SSL *s, PACKET *pkt, unsigned int context,
     unsigned int value;
 
     if (PACKET_remaining(pkt) != 1 || !PACKET_get_1(pkt, &value)) {
-       /* SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_MAXFRAGMENTLEN,
+        SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_MAXFRAGMENTLEN,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    } */
+    }
 
     /* Received |value| should be a valid max-fragment-length code. */
     if (!IS_MAX_FRAGMENT_LENGTH_EXT_VALID(value)) {
-     /*   SSLfatal(s, SSL_AD_ILLEGAL_PARAMETER,
+        SSLfatal(s, SSL_AD_ILLEGAL_PARAMETER,
                  SSL_F_TLS_PARSE_CTOS_MAXFRAGMENTLEN,
                  SSL_R_SSL3_EXT_INVALID_MAX_FRAGMENT_LENGTH);
         return 0;
     }
-    } */
 
     /*
      * RFC 6066:  The negotiated length applies for the duration of the session
@@ -216,9 +215,6 @@ int tls_parse_ctos_maxfragmentlen(SSL *s, PACKET *pkt, unsigned int context,
                  SSL_F_TLS_PARSE_CTOS_MAXFRAGMENTLEN,
                  SSL_R_SSL3_EXT_INVALID_MAX_FRAGMENT_LENGTH);
         return 0;
-    }
-
-    }
     }
 
     /*
@@ -237,21 +233,20 @@ int tls_parse_ctos_srp(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
 
     if (!PACKET_as_length_prefixed_1(pkt, &srp_I)
             || PACKET_contains_zero_byte(&srp_I)) {
-      /*  SSLfatal(s, SSL_AD_DECODE_ERROR,
+        SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_SRP,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    } */
+    }
 
     /*
      * TODO(openssl-team): currently, we re-authenticate the user
      * upon resumption. Instead, we MUST ignore the login.
      */
     if (!PACKET_strndup(&srp_I, &s->srp_ctx.login)) {
-        /* SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PARSE_CTOS_SRP,
-                 ERR_R_INTERNAL_ERROR); */
-        return 1;
-    }
+         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PARSE_CTOS_SRP,
+                 ERR_R_INTERNAL_ERROR);
+        return 0;
     }
 
     return 1;
@@ -266,10 +261,10 @@ int tls_parse_ctos_ec_pt_formats(SSL *s, PACKET *pkt, unsigned int context,
 
     if (!PACKET_as_length_prefixed_1(pkt, &ec_point_format_list)
         || PACKET_remaining(&ec_point_format_list) == 0) {
-        /* SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_EC_PT_FORMATS,
+        SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_EC_PT_FORMATS,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    } */
+    }
 
     if (!s->hit) {
         if (!PACKET_memdup(&ec_point_format_list,
@@ -280,7 +275,7 @@ int tls_parse_ctos_ec_pt_formats(SSL *s, PACKET *pkt, unsigned int context,
             return 0;
         }
     }
-    }
+    
     return 1;
 }
 #endif                          /* OPENSSL_NO_EC */
@@ -307,19 +302,18 @@ int tls_parse_ctos_sig_algs_cert(SSL *s, PACKET *pkt, unsigned int context,
 
     if (!PACKET_as_length_prefixed_2(pkt, &supported_sig_algs)
             || PACKET_remaining(&supported_sig_algs) == 0) {
-       /* SSLfatal(s, SSL_AD_DECODE_ERROR,
+        SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_SIG_ALGS_CERT, SSL_R_BAD_EXTENSION);
         return 0;
-    } */
+    }
 
     if (!s->hit && !tls1_save_sigalgs(s, &supported_sig_algs, 1)) {
-        /* SSLfatal(s, SSL_AD_DECODE_ERROR,
-                 SSL_F_TLS_PARSE_CTOS_SIG_ALGS_CERT, SSL_R_BAD_EXTENSION); */
-        return 1;
+         SSLfatal(s, SSL_AD_DECODE_ERROR,
+                 SSL_F_TLS_PARSE_CTOS_SIG_ALGS_CERT, SSL_R_BAD_EXTENSION);
+        return 0;
     }
-    }
-   
-    return 1;
+    
+   return 1;
 }
 
 int tls_parse_ctos_sig_algs(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
@@ -329,16 +323,15 @@ int tls_parse_ctos_sig_algs(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
 
     if (!PACKET_as_length_prefixed_2(pkt, &supported_sig_algs)
             || PACKET_remaining(&supported_sig_algs) == 0) {
-        /* SSLfatal(s, SSL_AD_DECODE_ERROR,
+         SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_SIG_ALGS, SSL_R_BAD_EXTENSION);
         return 0;
-    } */
+    }
 
     if (!s->hit && !tls1_save_sigalgs(s, &supported_sig_algs, 0)) {
-        /* SSLfatal(s, SSL_AD_DECODE_ERROR,
+         SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_SIG_ALGS, SSL_R_BAD_EXTENSION); */
-        return 1;
-    }
+        return 0;
     }
 
     return 1;
@@ -487,20 +480,19 @@ int tls_parse_ctos_alpn(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
 
     if (!PACKET_as_length_prefixed_2(pkt, &protocol_list)
         || PACKET_remaining(&protocol_list) < 2) {
-       /* SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_ALPN,
+        SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_ALPN,
                  SSL_R_BAD_EXTENSION);
         return 0;
-    } */
+    }
 
     save_protocol_list = protocol_list;
     do {
         /* Protocol names can't be empty. */
         if (!PACKET_get_length_prefixed_1(&protocol_list, &protocol)
                 || PACKET_remaining(&protocol) == 0) {
-            break;
-            /* SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_ALPN,
+            SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_ALPN,
                      SSL_R_BAD_EXTENSION);
-            return 0; */
+            return 0;
         }
     } while (PACKET_remaining(&protocol_list) != 0);
 
@@ -513,7 +505,7 @@ int tls_parse_ctos_alpn(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
                  ERR_R_INTERNAL_ERROR);
         return 0;
     }
-    }
+
     return 1;
 }
 
@@ -1042,10 +1034,10 @@ int tls_parse_ctos_supported_groups(SSL *s, PACKET *pkt, unsigned int context,
     if (!PACKET_as_length_prefixed_2(pkt, &supported_groups_list)
             || PACKET_remaining(&supported_groups_list) == 0
             || (PACKET_remaining(&supported_groups_list) % 2) != 0) {
-       /* SSLfatal(s, SSL_AD_DECODE_ERROR,
+        SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_SUPPORTED_GROUPS, SSL_R_BAD_EXTENSION);
         return 0;
-    } */
+    }
 
     if (!s->hit || SSL_IS_TLS13(s)) {
         OPENSSL_free(s->ext.peer_supportedgroups);
@@ -1054,13 +1046,11 @@ int tls_parse_ctos_supported_groups(SSL *s, PACKET *pkt, unsigned int context,
         if (!tls1_save_u16(&supported_groups_list,
                            &s->ext.peer_supportedgroups,
                            &s->ext.peer_supportedgroups_len)) {
-           /* SSLfatal(s, SSL_AD_INTERNAL_ERROR,
+            SSLfatal(s, SSL_AD_INTERNAL_ERROR,
                      SSL_F_TLS_PARSE_CTOS_SUPPORTED_GROUPS,
                      ERR_R_INTERNAL_ERROR);
-            return 0; */
-            return 1;
+            return 0; 
         }
-    }
     }
 
     return 1;
@@ -1070,13 +1060,12 @@ int tls_parse_ctos_supported_groups(SSL *s, PACKET *pkt, unsigned int context,
 int tls_parse_ctos_ems(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
                        size_t chainidx)
 {
-   printf("tls_parse_ctos_ems  starts to execute\n");
     /* The extension must always be empty */
-   /* if (PACKET_remaining(pkt) != 0) {
+    if (PACKET_remaining(pkt) != 0) {
         SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_EMS, SSL_R_BAD_EXTENSION);
-        return 0; 
-    } */
+        return 0;
+    }
 
     s->s3->flags |= TLS1_FLAGS_RECEIVED_EXTMS;
 
@@ -1467,31 +1456,23 @@ EXT_RETURN tls_construct_stoc_ec_pt_formats(SSL *s, WPACKET *pkt,
                                             unsigned int context, X509 *x,
                                             size_t chainidx)
 {
-    printf("first stopping point in   tls_construct_stoc_ec_pt_formats\n");
     unsigned long alg_k = s->s3->tmp.new_cipher->algorithm_mkey;
-    printf("Second stopping point in   tls_construct_stoc_ec_pt_formats\n");
     unsigned long alg_a = s->s3->tmp.new_cipher->algorithm_auth;
-    printf("Third stopping point in   tls_construct_stoc_ec_pt_formats\n");
     int using_ecc = ((alg_k & SSL_kECDHE) || (alg_a & SSL_aECDSA))
                     && (s->ext.peer_ecpointformats != NULL);
     const unsigned char *plist;
     size_t plistlen;
-    printf("Fourth stopping point in   tls_construct_stoc_ec_pt_formats\n");
     if (!using_ecc)
         return EXT_RETURN_NOT_SENT;
-    printf("Fifth stopping point in   tls_construct_stoc_ec_pt_formats\n");
     tls1_get_formatlist(s, &plist, &plistlen);
-    printf("Sixth stopping point in   tls_construct_stoc_ec_pt_formats\n");
     if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_ec_point_formats)
             || !WPACKET_start_sub_packet_u16(pkt)
             || !WPACKET_sub_memcpy_u8(pkt, plist, plistlen)
             || !WPACKET_close(pkt)) {
-        printf("Seventh stopping point in   tls_construct_stoc_ec_pt_formats\n");
         SSLfatal(s, SSL_AD_INTERNAL_ERROR,
                  SSL_F_TLS_CONSTRUCT_STOC_EC_PT_FORMATS, ERR_R_INTERNAL_ERROR);
         return EXT_RETURN_FAIL;
     }
-    printf("Eigth stopping point in   tls_construct_stoc_ec_pt_formats\n");
     return EXT_RETURN_SENT;
 }
 #endif
