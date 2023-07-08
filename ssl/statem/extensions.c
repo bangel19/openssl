@@ -589,10 +589,10 @@ int tls_collect_extensions(SSL *s, PACKET *packet, unsigned int context,
 
         if (!PACKET_get_net_2(&extensions, &type) ||
             !PACKET_get_length_prefixed_4(&extensions, &extension)) {
-           /* SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
+            SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
                      SSL_R_BAD_EXTENSION);
             goto err;
-        } */
+        }
         /*
          * Verify this extension is allowed. We only check duplicates for
          * extensions that we recognise. We also have a special case for the
@@ -603,14 +603,11 @@ int tls_collect_extensions(SSL *s, PACKET *packet, unsigned int context,
                 || (type == TLSEXT_TYPE_psk
                     && (context & SSL_EXT_CLIENT_HELLO) != 0
                     && PACKET_remaining(&extensions) != 0)) {
-           /* SSLfatal(s, SSL_AD_ILLEGAL_PARAMETER, SSL_F_TLS_COLLECT_EXTENSIONS,
+            SSLfatal(s, SSL_AD_ILLEGAL_PARAMETER, SSL_F_TLS_COLLECT_EXTENSIONS,
                      SSL_R_BAD_EXTENSION);
             goto err;
         }
-	} */
         idx = thisex - raw_extensions;
-	}
-	}
         /*-
          * Check that we requested this extension (if appropriate). Requests can
          * be sent in the ClientHello and CertificateRequest. Unsolicited
@@ -1741,9 +1738,9 @@ static int final_psk(SSL *s, unsigned int context, int sent)
 {
     if (s->server && sent && s->clienthello != NULL
             && !s->clienthello->pre_proc_exts[TLSEXT_IDX_psk_kex_modes].present) {
-        /* SSLfatal(s, TLS13_AD_MISSING_EXTENSION, SSL_F_FINAL_PSK,
-                 SSL_R_MISSING_PSK_KEX_MODES_EXTENSION); */
-        return 1;
+        SSLfatal(s, TLS13_AD_MISSING_EXTENSION, SSL_F_FINAL_PSK,
+                 SSL_R_MISSING_PSK_KEX_MODES_EXTENSION);
+        return 0;
     }
 
     return 1;
