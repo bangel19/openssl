@@ -2383,6 +2383,7 @@ WORK_STATE tls_post_process_client_hello(SSL *s, WORK_STATE wst)
 
 int tls_construct_server_hello(SSL *s, WPACKET *pkt)
 {
+    printf("    Executing tls_construct_server_hello\n");
     int compm;
     size_t sl, len;
     int version;
@@ -2453,6 +2454,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
                  ERR_R_INTERNAL_ERROR);
         return 0;
     }
+    printf("    Calling tls_construct_extensions in tls_construct_server_hello\n");
     if (!tls_construct_extensions(s, pkt,
                                   s->hello_retry_request == SSL_HRR_PENDING
                                       ? SSL_EXT_TLS1_3_HELLO_RETRY_REQUEST
