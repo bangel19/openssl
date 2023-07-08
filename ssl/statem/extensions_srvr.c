@@ -647,7 +647,7 @@ int tls_parse_ctos_key_share(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
         return 0;
     }
 
-    if (!PACKET_as_length_prefixed_2(pkt, &key_share_list)) {
+    if (!PACKET_as_length_prefixed_4(pkt, &key_share_list)) {
         SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
                  SSL_R_LENGTH_MISMATCH);
         return 0;
