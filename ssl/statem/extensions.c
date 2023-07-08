@@ -592,6 +592,7 @@ int tls_collect_extensions(SSL *s, PACKET *packet, unsigned int context,
                      SSL_R_BAD_EXTENSION);
              goto err;  
         }
+	printf("Type is now %u\n", type);
         if (type == TLSEXT_TYPE_key_share) {
              if (!PACKET_get_length_prefixed_4(&extensions, &extension)) {
                   SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
