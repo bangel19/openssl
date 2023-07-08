@@ -1494,7 +1494,7 @@ MSG_PROCESS_RETURN tls_process_server_hello(SSL *s, PACKET *pkt)
     }
 
     if (!hrr) {
-        if (!tls_collect_extensions(s, &extpkt,
+        if (!tls_collect_extensions_serverhello_rlce(s, &extpkt,
                                     SSL_EXT_TLS1_2_SERVER_HELLO
                                     | SSL_EXT_TLS1_3_SERVER_HELLO,
                                     &extensions, NULL, 1)) {
