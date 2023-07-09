@@ -1841,7 +1841,8 @@ MSG_PROCESS_RETURN tls_process_server_certificate(SSL *s, PACKET *pkt)
     const unsigned char *certstart, *certbytes;
     STACK_OF(X509) *sk = NULL;
     EVP_PKEY *pkey = NULL;
-    size_t chainidx, certidx;
+    size_t chainidx = 0;
+    size_t certidx;
     unsigned int context = 0;
     const SSL_CERT_LOOKUP *clu;
 
@@ -1860,7 +1861,7 @@ MSG_PROCESS_RETURN tls_process_server_certificate(SSL *s, PACKET *pkt)
                  SSL_R_LENGTH_MISMATCH);
         goto err;
     }
-    for (chainidx = 0; PACKET_remaining(pkt); chainidx++) {
+   // for (chainidx = 0; PACKET_remaining(pkt); chainidx++) {
       /*  if (!PACKET_get_net_3(pkt, &cert_len)
             || !PACKET_get_bytes(pkt, &certbytes, cert_len)) {
             SSLfatal(s, SSL_AD_DECODE_ERROR,
@@ -1933,7 +1934,7 @@ MSG_PROCESS_RETURN tls_process_server_certificate(SSL *s, PACKET *pkt)
             goto err;
         }
         x = NULL;
-    }
+   // }
 
     i = ssl_verify_cert_chain(s, sk);
     /*
