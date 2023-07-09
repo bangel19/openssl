@@ -1861,13 +1861,33 @@ MSG_PROCESS_RETURN tls_process_server_certificate(SSL *s, PACKET *pkt)
         goto err;
     }
     for (chainidx = 0; PACKET_remaining(pkt); chainidx++) {
-        if (!PACKET_get_net_2(pkt, &cert_len)
+      /*  if (!PACKET_get_net_3(pkt, &cert_len)
             || !PACKET_get_bytes(pkt, &certbytes, cert_len)) {
             SSLfatal(s, SSL_AD_DECODE_ERROR,
                      SSL_F_TLS_PROCESS_SERVER_CERTIFICATE,
                      SSL_R_CERT_LENGTH_MISMATCH);
             goto err;
+        } */
+
+      if (!PACKET_get_net_3(pkt, &cert_len)) {
+            printf("PACKET_get_net_3 fails, certlen = %lu\n", cert_len);
+            SSLfatal(s, SSL_AD_DECODE_ERROR,
+                     SSL_F_TLS_PROCESS_SERVER_CERTIFICATE,
+                     SSL_R_CERT_LENGTH_MISMATCH);
+            goto err;
         }
+
+        printf("PACKET_get_net_3 passes, certlen = %lu\n", cert_len);
+
+        if (!PACKET_get_bytes(pkt, &certbytes, cert_len)) {
+            printf("PACKET_get_bytes fails\n");
+            SSLfatal(s, SSL_AD_DECODE_ERROR,
+                     SSL_F_TLS_PROCESS_SERVER_CERTIFICATE,
+                     SSL_R_CERT_LENGTH_MISMATCH);
+            goto err;
+        }
+
+        printf("PACKET_get_bytes passes\n");
 
         certstart = certbytes;
         x = d2i_X509(NULL, (const unsigned char **)&certbytes, cert_len);
