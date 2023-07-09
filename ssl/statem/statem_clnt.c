@@ -2708,7 +2708,7 @@ MSG_PROCESS_RETURN tls_process_new_session_ticket(SSL *s, PACKET *pkt)
     if (SSL_IS_TLS13(s)) {
         PACKET extpkt;
 
-        if (!PACKET_as_length_prefixed_2(pkt, &extpkt)
+        if (!PACKET_as_length_prefixed_4(pkt, &extpkt)
                 || PACKET_remaining(pkt) != 0) {
             SSLfatal(s, SSL_AD_DECODE_ERROR,
                      SSL_F_TLS_PROCESS_NEW_SESSION_TICKET,
@@ -2716,7 +2716,7 @@ MSG_PROCESS_RETURN tls_process_new_session_ticket(SSL *s, PACKET *pkt)
             goto err;
         }
 
-        if (!tls_collect_extensions(s, &extpkt,
+        if (!tls_collect_extensions_serverhello_rlce(s, &extpkt,
                                     SSL_EXT_TLS1_3_NEW_SESSION_TICKET, &exts,
                                     NULL, 1)
                 || !tls_parse_all_extensions(s,
