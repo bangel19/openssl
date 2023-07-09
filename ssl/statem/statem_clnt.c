@@ -1861,7 +1861,7 @@ MSG_PROCESS_RETURN tls_process_server_certificate(SSL *s, PACKET *pkt)
         goto err;
     }
     for (chainidx = 0; PACKET_remaining(pkt); chainidx++) {
-        if (!PACKET_get_net_3(pkt, &cert_len)
+        if (!PACKET_get_net_4(pkt, &cert_len)
             || !PACKET_get_bytes(pkt, &certbytes, cert_len)) {
             SSLfatal(s, SSL_AD_DECODE_ERROR,
                      SSL_F_TLS_PROCESS_SERVER_CERTIFICATE,
