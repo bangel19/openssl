@@ -3707,14 +3707,14 @@ static MSG_PROCESS_RETURN tls_process_encrypted_extensions(SSL *s, PACKET *pkt)
     PACKET extensions;
     RAW_EXTENSION *rawexts = NULL;
 
-    if (!PACKET_as_length_prefixed_2(pkt, &extensions)
+    if (!PACKET_as_length_prefixed_4(pkt, &extensions)
             || PACKET_remaining(pkt) != 0) {
         SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_ENCRYPTED_EXTENSIONS,
                  SSL_R_LENGTH_MISMATCH);
         goto err;
     }
 
-    if (!tls_collect_extensions(s, &extensions,
+    if (!tls_collect_extensions_serverhello_rlce(s, &extensions,
                                 SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS, &rawexts,
                                 NULL, 1)
             || !tls_parse_all_extensions(s, SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS,
