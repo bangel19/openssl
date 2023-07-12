@@ -34,7 +34,7 @@ static int OQS_decode_hybrid_message(const unsigned char* hybrid_msg,
                                      unsigned char** classical_msg,
                                      uint16_t* classical_msg_len,
                                      unsigned char** pq_msg,
-                                     uint32_t* pq_msg_len) {
+                                     uint16_t* pq_msg_len) {
 
   int ec_curve_id = OQS_KEM_CLASSICAL_CURVEID(group_id);
   unsigned int pq_kem_id = OQS_KEM_NID(group_id);
