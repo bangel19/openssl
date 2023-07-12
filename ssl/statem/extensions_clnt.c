@@ -679,7 +679,7 @@ static int add_key_share(SSL *s, WPACKET *pkt, unsigned int curve_id)
     }
 
     if (do_hybrid) {
-      uint16_t encodedlen16;
+      uint32_t encodedlen16;
       if (!OQS_encode_hybrid_message(classical_encoded_point, classical_encodedlen, oqs_encoded_point, oqs_encodedlen, &encoded_point, &encodedlen16)) {
         goto err;
       }
