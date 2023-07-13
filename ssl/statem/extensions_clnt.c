@@ -1881,7 +1881,8 @@ int tls_parse_stoc_key_share(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
     unsigned int group_id;
     PACKET encoded_pt;
     unsigned char *classical_encoded_pt = NULL, *oqs_encoded_pt = NULL;
-    uint16_t classical_encodedlen, oqs_encodedlen;
+    uint16_t classical_encodedlen;
+    uint32_t oqs_encodedlen;
     unsigned char *shared_secret = NULL, *oqs_shared_secret = NULL;
     size_t shared_secret_len = 0, oqs_shared_secret_len = 0;
     EVP_PKEY *ckey = s->s3->tmp.pkey, *skey = NULL;
