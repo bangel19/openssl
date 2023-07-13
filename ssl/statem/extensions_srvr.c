@@ -1908,7 +1908,7 @@ EXT_RETURN tls_construct_stoc_key_share(SSL *s, WPACKET *pkt,
     }
 
     if (do_hybrid) {
-      uint16_t encoded_pt_len16;
+      uint32_t encoded_pt_len16;
       int ret = OQS_encode_hybrid_message(classical_encodedPoint, classical_encoded_pt_len, oqs_encodedPoint, oqs_encoded_pt_len, &encodedPoint, &encoded_pt_len16);
       encoded_pt_len = encoded_pt_len16;
       OPENSSL_free(classical_encodedPoint);
