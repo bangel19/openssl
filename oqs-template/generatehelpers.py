@@ -41,7 +41,6 @@ def get_kem_nistlevel(alg, docsdir):
         if 'FrodoKEM' in name: name = name.replace('FrodoKEM', 'Frodo')
         if 'Saber-KEM' in name: name = name.replace('-KEM', '')
         if '-90s' in name: name = name.replace('-90s', '').replace('Kyber', 'Kyber90s')
-        if 'Classic-McEliece' in name: name = name.replace('Classic-McEliece', 'McEliece')
         if simplify(name) == simplify(alg['name_group']): return True
         return False
     # find the variant that matches
