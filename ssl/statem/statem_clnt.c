@@ -974,6 +974,7 @@ size_t ossl_statem_client_max_message_size(SSL *s)
         return 0;
 
     case TLS_ST_CR_SRVR_HELLO:
+        printf("SERVER_HELLO_MAX_LENGTH = %d", SERVER_HELLO_MAX_LENGTH);
         return SERVER_HELLO_MAX_LENGTH;
 
     case DTLS_ST_CR_HELLO_VERIFY_REQUEST:
