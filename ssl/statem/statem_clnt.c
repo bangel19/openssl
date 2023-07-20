@@ -1854,8 +1854,7 @@ MSG_PROCESS_RETURN tls_process_server_certificate(SSL *s, PACKET *pkt)
     const unsigned char *certstart, *certbytes;
     STACK_OF(X509) *sk = NULL;
     EVP_PKEY *pkey = NULL;
-    size_t chainidx = 0;
-    size_t certidx;
+    size_t chainidx, certidx;
     unsigned int context = 0;
     const SSL_CERT_LOOKUP *clu;
 
