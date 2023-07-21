@@ -1588,7 +1588,7 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
         if (PACKET_remaining(pkt) == 0) {
             PACKET_null_init(&clienthello->extensions);
         } else {
-          if (s->s3->tmp.message_size < 188317) {
+          if ((s->s3->tmp.message_size) < 188317) {
             if (!PACKET_get_length_prefixed_2(pkt, &clienthello->extensions)
                     || PACKET_remaining(pkt) != 0) {
                 SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_CLIENT_HELLO,
@@ -1617,7 +1617,7 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
     /* Preserve the raw extensions PACKET for later use */
     extensions = clienthello->extensions;
 
-    if (s->s3->tmp.message_size < 188317) {
+    if ((s->s3->tmp.message_size) < 188317) {
        printf("      Calling tls_collect_extensions_serverhello_rlce within tls_process_client_hello\n");
        if (!tls_collect_extensions_serverhello_rlce(s, &extensions, SSL_EXT_CLIENT_HELLO,
                                    &clienthello->pre_proc_exts,
