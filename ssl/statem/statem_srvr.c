@@ -1600,6 +1600,7 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
                 SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_CLIENT_HELLO,
                          SSL_R_LENGTH_MISMATCH);
                 goto err;
+            }
           }
         }
     }
