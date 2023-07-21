@@ -1587,12 +1587,20 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
         if (PACKET_remaining(pkt) == 0) {
             PACKET_null_init(&clienthello->extensions);
         } else {
+          if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
             if (!PACKET_get_length_prefixed_4(pkt, &clienthello->extensions)
                     || PACKET_remaining(pkt) != 0) {
                 SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_CLIENT_HELLO,
                          SSL_R_LENGTH_MISMATCH);
                 goto err;
             }
+          } else {
+            if (!PACKET_get_length_prefixed_2(pkt, &clienthello->extensions)
+                    || PACKET_remaining(pkt) != 0) {
+                SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_CLIENT_HELLO,
+                         SSL_R_LENGTH_MISMATCH);
+                goto err;
+          }
         }
     }
 
