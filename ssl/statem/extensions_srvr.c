@@ -653,6 +653,7 @@ int tls_parse_ctos_key_share(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
            SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
                     SSL_R_LENGTH_MISMATCH);
            return 0;
+       }
     } else {
        if (!PACKET_as_length_prefixed_4(pkt, &key_share_list)) {
            SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
@@ -687,13 +688,23 @@ int tls_parse_ctos_key_share(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
     }
 
     while (PACKET_remaining(&key_share_list) > 0) {
-        if (!PACKET_get_net_2(&key_share_list, &group_id)
-                || !PACKET_get_length_prefixed_4(&key_share_list, &encoded_pt)
-                || PACKET_remaining(&encoded_pt) == 0) {
-            SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
-                     SSL_R_LENGTH_MISMATCH);
-            return 0;
-        }
+       if ((s->s3->tmp.message_size) < 188317) {
+           if (!PACKET_get_net_2(&key_share_list, &group_id)
+                   || !PACKET_get_length_prefixed_2(&key_share_list, &encoded_pt)
+                   || PACKET_remaining(&encoded_pt) == 0) {
+               SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
+                        SSL_R_LENGTH_MISMATCH);
+               return 0;
+           }
+       } else {
+           if (!PACKET_get_net_2(&key_share_list, &group_id)
+                   || !PACKET_get_length_prefixed_4(&key_share_list, &encoded_pt)
+                   || PACKET_remaining(&encoded_pt) == 0) {
+               SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
+                        SSL_R_LENGTH_MISMATCH);
+               return 0;
+           }
+       }
 
         /*
          * If we already found a suitable key_share we loop through the
