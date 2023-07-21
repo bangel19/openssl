@@ -1153,6 +1153,7 @@ size_t ossl_statem_server_max_message_size(SSL *s)
 
     case TLS_ST_SR_CLNT_HELLO:
         printf("    return CLIENT_HELLO_MAX_LENGTH\n");
+        printf("s->s3->tmp.message_size is equal to %d\n", s->s3->tmp.message_size);
         return CLIENT_HELLO_MAX_LENGTH;
 
     case TLS_ST_SR_END_OF_EARLY_DATA:
