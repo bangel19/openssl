@@ -2475,16 +2475,30 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
                  ERR_R_INTERNAL_ERROR);
         return 0;
     }
-    printf("    Calling tls_construct_extensions in tls_construct_server_hello\n");
-    if (!tls_construct_extensions(s, pkt,
-                                  s->hello_retry_request == SSL_HRR_PENDING
-                                      ? SSL_EXT_TLS1_3_HELLO_RETRY_REQUEST
-                                      : (SSL_IS_TLS13(s)
-                                          ? SSL_EXT_TLS1_3_SERVER_HELLO
-                                          : SSL_EXT_TLS1_2_SERVER_HELLO),
-                                  NULL, 0)) {
-        /* SSLfatal() already called */
-        return 0;
+
+    if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
+        printf("    Calling tls_construct_extensions in tls_construct_server_hello\n");
+        if (!tls_construct_extensions(s, pkt,
+                                      s->hello_retry_request == SSL_HRR_PENDING
+                                          ? SSL_EXT_TLS1_3_HELLO_RETRY_REQUEST
+                                          : (SSL_IS_TLS13(s)
+                                              ? SSL_EXT_TLS1_3_SERVER_HELLO
+                                              : SSL_EXT_TLS1_2_SERVER_HELLO),
+                                      NULL, 0)) {
+            /* SSLfatal() already called */
+            return 0;
+        }
+    } else {
+       if (!tls_construct_extensions_normal_serverhello(s, pkt,
+                                      s->hello_retry_request == SSL_HRR_PENDING
+                                          ? SSL_EXT_TLS1_3_HELLO_RETRY_REQUEST
+                                          : (SSL_IS_TLS13(s)
+                                              ? SSL_EXT_TLS1_3_SERVER_HELLO
+                                              : SSL_EXT_TLS1_2_SERVER_HELLO),
+                                      NULL, 0)) {
+            /* SSLfatal() already called */
+            return 0;
+        }
     }
     if (s->hello_retry_request == SSL_HRR_PENDING) {
         /* Ditch the session. We'll create a new one next time around */
