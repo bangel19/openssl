@@ -2489,6 +2489,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
             return 0;
         }
     } else {
+       printf("    Calling tls_construct_extensions_normal_serverhello in tls_construct_server_hello\n");
        if (!tls_construct_extensions_normal_serverhello(s, pkt,
                                       s->hello_retry_request == SSL_HRR_PENDING
                                           ? SSL_EXT_TLS1_3_HELLO_RETRY_REQUEST
@@ -2930,6 +2931,7 @@ int tls_construct_certificate_request(SSL *s, WPACKET *pkt)
             }
         }
         if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
+            printf("    Calling tls_construct_extensions in tls_construct_certificate_request\n");
             if (!tls_construct_extensions(s, pkt,
                                           SSL_EXT_TLS1_3_CERTIFICATE_REQUEST, NULL,
                                           0)) {
@@ -2937,6 +2939,7 @@ int tls_construct_certificate_request(SSL *s, WPACKET *pkt)
                 return 0;
             }
         } else {
+            printf("    Calling tls_construct_extensions_normal_serverhello in tls_construct_certificate_request\n");
             if (!tls_construct_extensions_normal_serverhello(s, pkt,
                                           SSL_EXT_TLS1_3_CERTIFICATE_REQUEST, NULL,
                                           0)) {
@@ -3645,6 +3648,7 @@ WORK_STATE tls_post_process_client_key_exchange(SSL *s, WORK_STATE wst)
 
 MSG_PROCESS_RETURN tls_process_client_certificate(SSL *s, PACKET *pkt)
 {
+    printf("    Calling tls_process_client_certificate\n");
     int i;
     MSG_PROCESS_RETURN ret = MSG_PROCESS_ERROR;
     X509 *x = NULL;
@@ -3717,6 +3721,7 @@ MSG_PROCESS_RETURN tls_process_client_certificate(SSL *s, PACKET *pkt)
                          SSL_R_BAD_LENGTH);
                 goto err;
             }
+            printf("      Calling tls_collect_extensions in tls_process_client_certificate\n");
             if (!tls_collect_extensions(s, &extensions,
                                         SSL_EXT_TLS1_3_CERTIFICATE, &rawexts,
                                         NULL, chainidx == 0)
@@ -4113,6 +4118,7 @@ static int construct_stateful_ticket(SSL *s, WPACKET *pkt, uint32_t age_add,
 
 int tls_construct_new_session_ticket(SSL *s, WPACKET *pkt)
 {
+    printf("    Calling tls_construct_new_session_ticket\n");
     SSL_CTX *tctx = s->session_ctx;
     unsigned char tick_nonce[TICKET_NONCE_SIZE];
     union {
@@ -4229,6 +4235,7 @@ int tls_construct_new_session_ticket(SSL *s, WPACKET *pkt)
     }
 
     if (SSL_IS_TLS13(s)) {
+        printf("      Calling tls_construct_extensions in tls_construct_new_session_ticket\n");
         if (!tls_construct_extensions(s, pkt,
                                       SSL_EXT_TLS1_3_NEW_SESSION_TICKET,
                                       NULL, 0)) {
@@ -4317,13 +4324,16 @@ MSG_PROCESS_RETURN tls_process_next_proto(SSL *s, PACKET *pkt)
 
 static int tls_construct_encrypted_extensions(SSL *s, WPACKET *pkt)
 {
+   printf("    Calling tls_construct_encrypted_extensions\n");
    if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
+      printf("      Calling tls_construct_extensions in tls_construct_encrypted_extensions\n");
       if (!tls_construct_extensions(s, pkt, SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS,
                                     NULL, 0)) {
           /* SSLfatal() already called */
           return 0;
       }
    } else {
+     printf("      Calling tls_construct_extensions_normal_serverhello in tls_construct_encrypted_extensions\n");
      if (!tls_construct_extensions_normal_serverhello(s, pkt, SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS,
                                     NULL, 0)) {
           /* SSLfatal() already called */
