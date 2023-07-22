@@ -4309,11 +4309,19 @@ MSG_PROCESS_RETURN tls_process_next_proto(SSL *s, PACKET *pkt)
 
 static int tls_construct_encrypted_extensions(SSL *s, WPACKET *pkt)
 {
-    if (!tls_construct_extensions(s, pkt, SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS,
-                                  NULL, 0)) {
-        /* SSLfatal() already called */
-        return 0;
-    }
+   if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
+      if (!tls_construct_extensions(s, pkt, SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS,
+                                    NULL, 0)) {
+          /* SSLfatal() already called */
+          return 0;
+      }
+   } else {
+     if (!tls_construct_extensions_normal_serverhello(s, pkt, SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS,
+                                    NULL, 0)) {
+          /* SSLfatal() already called */
+          return 0;
+      }
+   }
 
     return 1;
 }
