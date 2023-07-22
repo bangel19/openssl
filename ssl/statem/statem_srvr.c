@@ -2929,12 +2929,20 @@ int tls_construct_certificate_request(SSL *s, WPACKET *pkt)
                 return 0;
             }
         }
-
-        if (!tls_construct_extensions(s, pkt,
-                                      SSL_EXT_TLS1_3_CERTIFICATE_REQUEST, NULL,
-                                      0)) {
-            /* SSLfatal() already called */
-            return 0;
+        if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
+            if (!tls_construct_extensions(s, pkt,
+                                          SSL_EXT_TLS1_3_CERTIFICATE_REQUEST, NULL,
+                                          0)) {
+                /* SSLfatal() already called */
+                return 0;
+            }
+        } else {
+            if (!tls_construct_extensions_normal_serverhello(s, pkt,
+                                          SSL_EXT_TLS1_3_CERTIFICATE_REQUEST, NULL,
+                                          0)) {
+                /* SSLfatal() already called */
+                return 0;
+            }
         }
         goto done;
     }
