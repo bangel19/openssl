@@ -1631,7 +1631,7 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
                                    &clienthello->pre_proc_exts,
                                    &clienthello->pre_proc_exts_len, 1)) { */
            /* SSLfatal already been called */
-           goto err;
+         //  goto err;
    /*    }
     } */
     s->clienthello = clienthello;
