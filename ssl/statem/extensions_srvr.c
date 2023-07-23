@@ -109,7 +109,7 @@ int tls_parse_ctos_server_name(SSL *s, PACKET *pkt, unsigned int context,
     unsigned int servname_type;
     PACKET sni, hostname;
 
-     if (!PACKET_as_length_prefixed_2(pkt, &sni)
+    if (!PACKET_as_length_prefixed_2(pkt, &sni)
         /* ServerNameList must be at least 1 byte long. */
         || PACKET_remaining(&sni) == 0) {
         SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_SERVER_NAME,
@@ -244,7 +244,7 @@ int tls_parse_ctos_srp(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
      * upon resumption. Instead, we MUST ignore the login.
      */
     if (!PACKET_strndup(&srp_I, &s->srp_ctx.login)) {
-         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PARSE_CTOS_SRP,
+        SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PARSE_CTOS_SRP,
                  ERR_R_INTERNAL_ERROR);
         return 0;
     }
@@ -275,7 +275,7 @@ int tls_parse_ctos_ec_pt_formats(SSL *s, PACKET *pkt, unsigned int context,
             return 0;
         }
     }
-    
+
     return 1;
 }
 #endif                          /* OPENSSL_NO_EC */
@@ -308,12 +308,12 @@ int tls_parse_ctos_sig_algs_cert(SSL *s, PACKET *pkt, unsigned int context,
     }
 
     if (!s->hit && !tls1_save_sigalgs(s, &supported_sig_algs, 1)) {
-         SSLfatal(s, SSL_AD_DECODE_ERROR,
+        SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_SIG_ALGS_CERT, SSL_R_BAD_EXTENSION);
         return 0;
     }
-    
-   return 1;
+
+    return 1;
 }
 
 int tls_parse_ctos_sig_algs(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
@@ -323,13 +323,13 @@ int tls_parse_ctos_sig_algs(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
 
     if (!PACKET_as_length_prefixed_2(pkt, &supported_sig_algs)
             || PACKET_remaining(&supported_sig_algs) == 0) {
-         SSLfatal(s, SSL_AD_DECODE_ERROR,
+        SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_SIG_ALGS, SSL_R_BAD_EXTENSION);
         return 0;
     }
 
     if (!s->hit && !tls1_save_sigalgs(s, &supported_sig_algs, 0)) {
-         SSLfatal(s, SSL_AD_DECODE_ERROR,
+        SSLfatal(s, SSL_AD_DECODE_ERROR,
                  SSL_F_TLS_PARSE_CTOS_SIG_ALGS, SSL_R_BAD_EXTENSION);
         return 0;
     }
@@ -624,7 +624,6 @@ int tls_parse_ctos_psk_kex_modes(SSL *s, PACKET *pkt, unsigned int context,
 int tls_parse_ctos_key_share(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
                              size_t chainidx)
 {
-   printf("          tls_parse_ctos_key_share   starts to execute\n");
 #ifndef OPENSSL_NO_TLS1_3
     unsigned int group_id;
     PACKET key_share_list, encoded_pt;
@@ -647,19 +646,12 @@ int tls_parse_ctos_key_share(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
         return 0;
     }
 
-   // if ((s->s3->tmp.message_size) < 188317) {
-       if (!PACKET_as_length_prefixed_2(pkt, &key_share_list)) {
-           SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
-                    SSL_R_LENGTH_MISMATCH);
-           return 0;
-       }
- /*   } else {
-       if (!PACKET_as_length_prefixed_4(pkt, &key_share_list)) {
-           SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
-                    SSL_R_LENGTH_MISMATCH);
-           return 0;
+    if (!PACKET_as_length_prefixed_2(pkt, &key_share_list)) {
+        SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
+                 SSL_R_LENGTH_MISMATCH);
+        return 0;
     }
-    } */
+
     /* Get our list of supported groups */
     oqs_tls13_get_server_supported_groups(s, &srvrgroups, &srvr_num_groups);
     /* Get the clients list of supported groups. */
@@ -687,23 +679,13 @@ int tls_parse_ctos_key_share(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
     }
 
     while (PACKET_remaining(&key_share_list) > 0) {
-     //  if ((s->s3->tmp.message_size) < 188317) {
-           if (!PACKET_get_net_2(&key_share_list, &group_id)
-                   || !PACKET_get_length_prefixed_2(&key_share_list, &encoded_pt)
-                   || PACKET_remaining(&encoded_pt) == 0) {
-               SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
-                        SSL_R_LENGTH_MISMATCH);
-               return 0;
-           }
-   /*    } else {
-           if (!PACKET_get_net_2(&key_share_list, &group_id)
-                   || !PACKET_get_length_prefixed_4(&key_share_list, &encoded_pt)
-                   || PACKET_remaining(&encoded_pt) == 0) {
-               SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
-                        SSL_R_LENGTH_MISMATCH);
-               return 0;
-           }
-       } */
+        if (!PACKET_get_net_2(&key_share_list, &group_id)
+                || !PACKET_get_length_prefixed_2(&key_share_list, &encoded_pt)
+                || PACKET_remaining(&encoded_pt) == 0) {
+            SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PARSE_CTOS_KEY_SHARE,
+                     SSL_R_LENGTH_MISMATCH);
+            return 0;
+        }
 
         /*
          * If we already found a suitable key_share we loop through the
@@ -1066,7 +1048,7 @@ int tls_parse_ctos_supported_groups(SSL *s, PACKET *pkt, unsigned int context,
             SSLfatal(s, SSL_AD_INTERNAL_ERROR,
                      SSL_F_TLS_PARSE_CTOS_SUPPORTED_GROUPS,
                      ERR_R_INTERNAL_ERROR);
-            return 0; 
+            return 0;
         }
     }
 
@@ -1479,8 +1461,10 @@ EXT_RETURN tls_construct_stoc_ec_pt_formats(SSL *s, WPACKET *pkt,
                     && (s->ext.peer_ecpointformats != NULL);
     const unsigned char *plist;
     size_t plistlen;
+
     if (!using_ecc)
         return EXT_RETURN_NOT_SENT;
+
     tls1_get_formatlist(s, &plist, &plistlen);
     if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_ec_point_formats)
             || !WPACKET_start_sub_packet_u16(pkt)
@@ -1490,6 +1474,7 @@ EXT_RETURN tls_construct_stoc_ec_pt_formats(SSL *s, WPACKET *pkt,
                  SSL_F_TLS_CONSTRUCT_STOC_EC_PT_FORMATS, ERR_R_INTERNAL_ERROR);
         return EXT_RETURN_FAIL;
     }
+
     return EXT_RETURN_SENT;
 }
 #endif
@@ -1768,7 +1753,6 @@ EXT_RETURN tls_construct_stoc_key_share(SSL *s, WPACKET *pkt,
                                         unsigned int context, X509 *x,
                                         size_t chainidx)
 {
-   printf("      Executing tls_construct_stoc_key_share\n");
 #ifndef OPENSSL_NO_TLS1_3
     unsigned char *encodedPoint = NULL, *classical_encodedPoint = NULL, *oqs_encodedPoint = NULL;
     size_t encoded_pt_len = 0;
@@ -1924,7 +1908,7 @@ EXT_RETURN tls_construct_stoc_key_share(SSL *s, WPACKET *pkt,
     }
 
     if (do_hybrid) {
-      uint32_t encoded_pt_len16;
+      uint16_t encoded_pt_len16;
       int ret = OQS_encode_hybrid_message(classical_encodedPoint, classical_encoded_pt_len, oqs_encodedPoint, oqs_encoded_pt_len, &encodedPoint, &encoded_pt_len16);
       encoded_pt_len = encoded_pt_len16;
       OPENSSL_free(classical_encodedPoint);
