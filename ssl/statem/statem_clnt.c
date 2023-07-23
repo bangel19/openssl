@@ -1507,7 +1507,7 @@ MSG_PROCESS_RETURN tls_process_server_hello(SSL *s, PACKET *pkt)
     }
 
     if (!hrr) {
-        if (!tls_collect_extensions_serverhello_rlce(s, &extpkt,
+        if (!tls_collect_extensions(s, &extpkt,
                                     SSL_EXT_TLS1_2_SERVER_HELLO
                                     | SSL_EXT_TLS1_3_SERVER_HELLO,
                                     &extensions, NULL, 1)) {
@@ -2732,7 +2732,7 @@ MSG_PROCESS_RETURN tls_process_new_session_ticket(SSL *s, PACKET *pkt)
             goto err;
         }
 
-        if (!tls_collect_extensions_serverhello_rlce(s, &extpkt,
+        if (!tls_collect_extensions(s, &extpkt,
                                     SSL_EXT_TLS1_3_NEW_SESSION_TICKET, &exts,
                                     NULL, 1)
                 || !tls_parse_all_extensions(s,
@@ -3751,7 +3751,7 @@ static MSG_PROCESS_RETURN tls_process_encrypted_extensions(SSL *s, PACKET *pkt)
         goto err;
     }
 
-    if (!tls_collect_extensions_serverhello_rlce(s, &extensions,
+    if (!tls_collect_extensions(s, &extensions,
                                 SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS, &rawexts,
                                 NULL, 1)
             || !tls_parse_all_extensions(s, SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS,
