@@ -634,8 +634,7 @@ int tls_parse_ctos_key_share(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
     int do_pqc = 0; /* 1 if post-quantum alg, 0 otherwise */
     int do_hybrid = 0; /* 1 if post-quantum hybrid alg, 0 otherwise */
     unsigned char *classical_encoded_pt = NULL, *oqs_encoded_pt = NULL;
-    uint16_t classical_encodedlen = 0;
-    uint32_t oqs_encodedlen = 0;
+    uint16_t classical_encodedlen = 0, oqs_encodedlen = 0;
     int has_error = 0;
 
     if (s->hit && (s->ext.psk_kex_mode & TLSEXT_KEX_MODE_FLAG_KE_DHE) == 0)
