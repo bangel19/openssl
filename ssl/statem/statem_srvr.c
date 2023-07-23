@@ -1588,21 +1588,21 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
         if (PACKET_remaining(pkt) == 0) {
             PACKET_null_init(&clienthello->extensions);
         } else {
-          if ((s->s3->tmp.message_size) < 188317) {
+        //  if ((s->s3->tmp.message_size) < 188317) {
             if (!PACKET_get_length_prefixed_2(pkt, &clienthello->extensions)
                     || PACKET_remaining(pkt) != 0) {
                 SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_CLIENT_HELLO,
                          SSL_R_LENGTH_MISMATCH);
                 goto err;
             }
-          } else {
+       /*   } else {
             if (!PACKET_get_length_prefixed_4(pkt, &clienthello->extensions)
                     || PACKET_remaining(pkt) != 0) {
                 SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_CLIENT_HELLO,
                          SSL_R_LENGTH_MISMATCH);
                 goto err;
             }
-          }
+          } */
         }
     }
 
@@ -1617,7 +1617,7 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
     /* Preserve the raw extensions PACKET for later use */
     extensions = clienthello->extensions;
 
-    if ((s->s3->tmp.message_size) < 188317) {
+   // if ((s->s3->tmp.message_size) < 188317) {
        printf("      Calling tls_collect_extensions_serverhello_rlce within tls_process_client_hello\n");
        if (!tls_collect_extensions_serverhello_rlce(s, &extensions, SSL_EXT_CLIENT_HELLO,
                                    &clienthello->pre_proc_exts,
@@ -1625,7 +1625,7 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
            /* SSLfatal already been called */
            goto err;
        }
-    } else {
+ /*   } else {
        printf("      Calling tls_collect_extensions within tls_process_client_hello\n");
        if (!tls_collect_extensions(s, &extensions, SSL_EXT_CLIENT_HELLO,
                                    &clienthello->pre_proc_exts,
@@ -1633,7 +1633,7 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
            /* SSLfatal already been called */
            goto err;
        }
-    }
+    } */
     s->clienthello = clienthello;
 
     return MSG_PROCESS_CONTINUE_PROCESSING;
@@ -2476,7 +2476,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
         return 0;
     }
 
-    if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
+  /*  if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
         printf("    Calling tls_construct_extensions in tls_construct_server_hello\n");
         if (!tls_construct_extensions(s, pkt,
                                       s->hello_retry_request == SSL_HRR_PENDING
@@ -2484,11 +2484,11 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
                                           : (SSL_IS_TLS13(s)
                                               ? SSL_EXT_TLS1_3_SERVER_HELLO
                                               : SSL_EXT_TLS1_2_SERVER_HELLO),
-                                      NULL, 0)) {
+                                      NULL, 0)) { */
             /* SSLfatal() already called */
-            return 0;
+      /*      return 0;
         }
-    } else {
+    } else { */
        printf("    Calling tls_construct_extensions_normal_serverhello in tls_construct_server_hello\n");
        if (!tls_construct_extensions_normal_serverhello(s, pkt,
                                       s->hello_retry_request == SSL_HRR_PENDING
@@ -2500,7 +2500,7 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
             /* SSLfatal() already called */
             return 0;
         }
-    }
+ //   }
     if (s->hello_retry_request == SSL_HRR_PENDING) {
         /* Ditch the session. We'll create a new one next time around */
         SSL_SESSION_free(s->session);
@@ -2930,15 +2930,15 @@ int tls_construct_certificate_request(SSL *s, WPACKET *pkt)
                 return 0;
             }
         }
-        if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
+     /*   if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
             printf("    Calling tls_construct_extensions in tls_construct_certificate_request\n");
             if (!tls_construct_extensions(s, pkt,
                                           SSL_EXT_TLS1_3_CERTIFICATE_REQUEST, NULL,
-                                          0)) {
+                                          0)) { */
                 /* SSLfatal() already called */
-                return 0;
+        /*        return 0;
             }
-        } else {
+        } else { */
             printf("    Calling tls_construct_extensions_normal_serverhello in tls_construct_certificate_request\n");
             if (!tls_construct_extensions_normal_serverhello(s, pkt,
                                           SSL_EXT_TLS1_3_CERTIFICATE_REQUEST, NULL,
@@ -2946,7 +2946,7 @@ int tls_construct_certificate_request(SSL *s, WPACKET *pkt)
                 /* SSLfatal() already called */
                 return 0;
             }
-        }
+    //    }
         goto done;
     }
 
@@ -4325,21 +4325,21 @@ MSG_PROCESS_RETURN tls_process_next_proto(SSL *s, PACKET *pkt)
 static int tls_construct_encrypted_extensions(SSL *s, WPACKET *pkt)
 {
    printf("    Calling tls_construct_encrypted_extensions\n");
-   if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
+ /*  if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
       printf("      Calling tls_construct_extensions in tls_construct_encrypted_extensions\n");
       if (!tls_construct_extensions(s, pkt, SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS,
-                                    NULL, 0)) {
+                                    NULL, 0)) { */
           /* SSLfatal() already called */
-          return 0;
+      /*    return 0;
       }
-   } else {
+   } else { */
      printf("      Calling tls_construct_extensions_normal_serverhello in tls_construct_encrypted_extensions\n");
      if (!tls_construct_extensions_normal_serverhello(s, pkt, SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS,
                                     NULL, 0)) {
           /* SSLfatal() already called */
           return 0;
       }
-   }
+ //  }
 
     return 1;
 }
