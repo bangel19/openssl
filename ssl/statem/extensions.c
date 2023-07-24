@@ -587,12 +587,25 @@ int tls_collect_extensions(SSL *s, PACKET *packet, unsigned int context,
         PACKET extension;
         RAW_EXTENSION *thisex;
 
-        if (!PACKET_get_net_2(&extensions, &type) ||
-            !PACKET_get_length_prefixed_2(&extensions, &extension)) {
-            SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
+        if (!PACKET_get_net_2(&extensions, &type)) {
+             SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
                      SSL_R_BAD_EXTENSION);
-            goto err;
+             goto err;  
         }
+        if (type == TLSEXT_TYPE_key_share) {
+             if (!PACKET_get_length_prefixed_4(&extensions, &extension)) {
+                  SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
+                         SSL_R_BAD_EXTENSION);
+                  goto err;
+             }
+        } 
+	else {
+	      if (!PACKET_get_length_prefixed_2(&extensions, &extension)) {
+                   SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_COLLECT_EXTENSIONS,
+                         SSL_R_BAD_EXTENSION);
+                   goto err;
+              }
+	}
         /*
          * Verify this extension is allowed. We only check duplicates for
          * extensions that we recognise. We also have a special case for the
@@ -677,7 +690,6 @@ int tls_collect_extensions(SSL *s, PACKET *packet, unsigned int context,
     OPENSSL_free(raw_extensions);
     return 0;
 }
-
 /*
  * Runs the parser for a given extension with index |idx|. |exts| contains the
  * list of all parsed extensions previously collected by
