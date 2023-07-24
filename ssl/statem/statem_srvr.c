@@ -1595,11 +1595,22 @@ MSG_PROCESS_RETURN tls_process_client_hello(SSL *s, PACKET *pkt)
 
     /* Preserve the raw extensions PACKET for later use */
     extensions = clienthello->extensions;
-    if (!tls_collect_extensions(s, &extensions, SSL_EXT_CLIENT_HELLO,
-                                &clienthello->pre_proc_exts,
-                                &clienthello->pre_proc_exts_len, 1)) {
-        /* SSLfatal already been called */
-        goto err;
+    if ((s->s3->tmp.message_size) < 188317) {
+       printf("      Calling tls_collect_extensions_serverhello_rlce within tls_process_client_hello\n");
+       if (!tls_collect_extensions_serverhello_rlce(s, &extensions, SSL_EXT_CLIENT_HELLO,
+                                   &clienthello->pre_proc_exts,
+                                   &clienthello->pre_proc_exts_len, 1)) {
+           /* SSLfatal already been called */
+           goto err;
+       }
+    } else {
+       printf("      Calling tls_collect_extensions within tls_process_client_hello\n");
+       if (!tls_collect_extensions(s, &extensions, SSL_EXT_CLIENT_HELLO,
+                                   &clienthello->pre_proc_exts,
+                                   &clienthello->pre_proc_exts_len, 1)) { 
+           /* SSLfatal already been called */
+           goto err;
+       }
     }
     s->clienthello = clienthello;
 
