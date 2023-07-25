@@ -1947,9 +1947,9 @@ MSG_PROCESS_RETURN tls_process_server_certificate(SSL *s, PACKET *pkt)
         }
         x = NULL;
         
-        if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
+       /* if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F)) {
           break;
-        }
+        } */
     }
 
     i = ssl_verify_cert_chain(s, sk);
