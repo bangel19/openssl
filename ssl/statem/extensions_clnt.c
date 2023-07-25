@@ -695,7 +695,7 @@ static int add_key_share(SSL *s, WPACKET *pkt, unsigned int curve_id)
     }
 
     /* Create KeyShareEntry */
-   if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
+   if (((curve_id) == 0x024D) || ((curve_id) == 0x024E) || ((curve_id) == 0x024F) || ((curve_id) == 0x0239)) {
        if (!WPACKET_put_bytes_u16(pkt, curve_id)
                || !WPACKET_sub_memcpy_u32(pkt, encoded_point, encodedlen)) {
            SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_ADD_KEY_SHARE,
