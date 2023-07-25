@@ -696,6 +696,7 @@ static int add_key_share(SSL *s, WPACKET *pkt, unsigned int curve_id)
 
     /* Create KeyShareEntry */
    if (((curve_id) == 0x024D) || ((curve_id) == 0x024E) || ((curve_id) == 0x024F) || ((curve_id) == 0x0239)) {
+       printf("            Calling WPACKET_sub_memcpy_u32 within add_key_share\n");
        if (!WPACKET_put_bytes_u16(pkt, curve_id)
                || !WPACKET_sub_memcpy_u32(pkt, encoded_point, encodedlen)) {
            SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_ADD_KEY_SHARE,
@@ -703,6 +704,7 @@ static int add_key_share(SSL *s, WPACKET *pkt, unsigned int curve_id)
            goto err;
        }
    } else {
+      printf("            Calling WPACKET_sub_memcpy_u16 within add_key_share\n");
       if (!WPACKET_put_bytes_u16(pkt, curve_id)
                || !WPACKET_sub_memcpy_u16(pkt, encoded_point, encodedlen)) {
            SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_ADD_KEY_SHARE,
@@ -740,6 +742,7 @@ EXT_RETURN tls_construct_ctos_key_share(SSL *s, WPACKET *pkt,
 
     /* key_share extension */
    if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
+       printf("          Calling WPACKET_start_sub_packet_u32 in tls_construct_ctos_key_share\n");
        if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_key_share)
                   /* Extension data sub-packet */
                || !WPACKET_start_sub_packet_u32(pkt)
@@ -750,6 +753,7 @@ EXT_RETURN tls_construct_ctos_key_share(SSL *s, WPACKET *pkt,
            return EXT_RETURN_FAIL;
        }
    } else {
+      printf("          Calling WPACKET_start_sub_packet_u16 in tls_construct_ctos_key_share\n");
       if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_key_share)
                   /* Extension data sub-packet */
                || !WPACKET_start_sub_packet_u16(pkt)
