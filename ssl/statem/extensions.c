@@ -935,7 +935,7 @@ int should_add_extension(SSL *s, unsigned int extctx, unsigned int thisctx,
  * 0 being the first in the chain). Returns 1 on success or 0 on failure. On a
  * failure construction stops at the first extension to fail to construct.
  */
-int tls_construct_extensions(SSL *s, WPACKET *pkt, unsigned int context,
+int tls_construct_extensions_normal_serverhello(SSL *s, WPACKET *pkt, unsigned int context,
                              X509 *x, size_t chainidx)
 {
     size_t i;
@@ -1012,7 +1012,7 @@ int tls_construct_extensions(SSL *s, WPACKET *pkt, unsigned int context,
     return 1;
 }
 
-int tls_construct_extensions_normal_serverhello(SSL *s, WPACKET *pkt, unsigned int context,
+int tls_construct_extensions(SSL *s, WPACKET *pkt, unsigned int context,
                              X509 *x, size_t chainidx)
 {
     size_t i;
