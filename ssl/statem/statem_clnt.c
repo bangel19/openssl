@@ -1309,8 +1309,8 @@ int tls_construct_client_hello(SSL *s, WPACKET *pkt)
       /*      return 0;
         }
     } else { */
-        printf("      Calling tls_construct_extensions within tls_construct_client_hello\n");
-        if (!tls_construct_extensions(s, pkt, SSL_EXT_CLIENT_HELLO, NULL, 0)) {
+        printf("      Calling tls_construct_extensions_normal_serverhello within tls_construct_client_hello\n");
+        if (!tls_construct_extensions_normal_serverhello(s, pkt, SSL_EXT_CLIENT_HELLO, NULL, 0)) {
             /* SSLfatal() already called */
             return 0;
         }
