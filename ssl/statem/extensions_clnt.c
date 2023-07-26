@@ -760,7 +760,7 @@ EXT_RETURN tls_construct_ctos_key_share(SSL *s, WPACKET *pkt,
     }
 
     /* key_share extension */
-   if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
+   if (((curve_id) == 0x024D) || ((curve_id) == 0x024E) || ((curve_id) == 0x024F) || ((curve_id) == 0x0239)) {
        printf("          Calling WPACKET_start_sub_packet_u32 in tls_construct_ctos_key_share\n");
        if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_key_share)
                   /* Extension data sub-packet */
