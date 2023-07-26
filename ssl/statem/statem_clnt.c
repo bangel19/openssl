@@ -1301,7 +1301,7 @@ int tls_construct_client_hello(SSL *s, WPACKET *pkt)
 
     /* TLS extensions */
 
-    size_t i, num_groups = 0;
+    size_t j, num_groups = 0;
     const uint16_t *pgroups = NULL;
     uint16_t curve_id = 0;
 
@@ -1314,12 +1314,12 @@ int tls_construct_client_hello(SSL *s, WPACKET *pkt)
     if (s->s3->group_id != 0) {
         curve_id = s->s3->group_id;
     } else {
-        for (i = 0; i < num_groups; i++) {
+        for (j = 0; j < num_groups; j++) {
 
-            if (!tls_curve_allowed(s, pgroups[i], SSL_SECOP_CURVE_SUPPORTED))
+            if (!tls_curve_allowed(s, pgroups[j], SSL_SECOP_CURVE_SUPPORTED))
                 continue;
 
-            curve_id = pgroups[i];
+            curve_id = pgroups[j];
             break;
         }
     }
