@@ -740,6 +740,25 @@ EXT_RETURN tls_construct_ctos_key_share(SSL *s, WPACKET *pkt,
     const uint16_t *pgroups = NULL;
     uint16_t curve_id = 0;
 
+    tls1_get_supported_groups(s, &pgroups, &num_groups);
+
+    /*
+     * TODO(TLS1.3): Make the number of key_shares sent configurable. For
+     * now, just send one
+     */
+    if (s->s3->group_id != 0) {
+        curve_id = s->s3->group_id;
+    } else {
+        for (i = 0; i < num_groups; i++) {
+
+            if (!tls_curve_allowed(s, pgroups[i], SSL_SECOP_CURVE_SUPPORTED))
+                continue;
+
+            curve_id = pgroups[i];
+            break;
+        }
+    }
+
     /* key_share extension */
    if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
        printf("          Calling WPACKET_start_sub_packet_u32 in tls_construct_ctos_key_share\n");
@@ -764,24 +783,6 @@ EXT_RETURN tls_construct_ctos_key_share(SSL *s, WPACKET *pkt,
            return EXT_RETURN_FAIL;
        }
    }
-    tls1_get_supported_groups(s, &pgroups, &num_groups);
-
-    /*
-     * TODO(TLS1.3): Make the number of key_shares sent configurable. For
-     * now, just send one
-     */
-    if (s->s3->group_id != 0) {
-        curve_id = s->s3->group_id;
-    } else {
-        for (i = 0; i < num_groups; i++) {
-
-            if (!tls_curve_allowed(s, pgroups[i], SSL_SECOP_CURVE_SUPPORTED))
-                continue;
-
-            curve_id = pgroups[i];
-            break;
-        }
-    }
 
     if (curve_id == 0) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_CONSTRUCT_CTOS_KEY_SHARE,
