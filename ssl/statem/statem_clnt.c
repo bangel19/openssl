@@ -1300,21 +1300,45 @@ int tls_construct_client_hello(SSL *s, WPACKET *pkt)
     }
 
     /* TLS extensions */
-    
 
-   /* if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
-        printf("      Calling tls_construct_extensions_normal_serverhello within tls_construct_client_hello\n");
-        if (!tls_construct_extensions_normal_serverhello(s, pkt, SSL_EXT_CLIENT_HELLO, NULL, 0)) { */
-            /* SSLfatal() already called */
-      /*      return 0;
+    size_t i, num_groups = 0;
+    const uint16_t *pgroups = NULL;
+    uint16_t curve_id = 0;
+
+    tls1_get_supported_groups(s, &pgroups, &num_groups);
+
+    /*
+     * TODO(TLS1.3): Make the number of key_shares sent configurable. For
+     * now, just send one
+     */
+    if (s->s3->group_id != 0) {
+        curve_id = s->s3->group_id;
+    } else {
+        for (i = 0; i < num_groups; i++) {
+
+            if (!tls_curve_allowed(s, pgroups[i], SSL_SECOP_CURVE_SUPPORTED))
+                continue;
+
+            curve_id = pgroups[i];
+            break;
         }
-    } else { */
+    }
+
+    s->s3->group_id = curve_id;
+
+    if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
         printf("      Calling tls_construct_extensions_normal_serverhello within tls_construct_client_hello\n");
         if (!tls_construct_extensions_normal_serverhello(s, pkt, SSL_EXT_CLIENT_HELLO, NULL, 0)) {
             /* SSLfatal() already called */
             return 0;
         }
-   // }
+    } else {
+        printf("      Calling tls_construct_extensions within tls_construct_client_hello\n");
+        if (!tls_construct_extensions(s, pkt, SSL_EXT_CLIENT_HELLO, NULL, 0)) {
+            /* SSLfatal() already called */
+            return 0;
+        }
+    }
     return 1;
 }
 
