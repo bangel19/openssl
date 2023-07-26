@@ -2757,7 +2757,7 @@ MSG_PROCESS_RETURN tls_process_new_session_ticket(SSL *s, PACKET *pkt)
     if (SSL_IS_TLS13(s)) {
         PACKET extpkt;
 
-        if (!PACKET_as_length_prefixed_4(pkt, &extpkt)
+        if (!PACKET_as_length_prefixed_2(pkt, &extpkt)
                 || PACKET_remaining(pkt) != 0) {
             SSLfatal(s, SSL_AD_DECODE_ERROR,
                      SSL_F_TLS_PROCESS_NEW_SESSION_TICKET,
