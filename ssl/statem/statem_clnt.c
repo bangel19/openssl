@@ -1519,7 +1519,7 @@ MSG_PROCESS_RETURN tls_process_server_hello(SSL *s, PACKET *pkt)
 
     /* TLS extensions */
 
-    if (((s->s3->group_id) == 0x023A) || ((s->s3->group_id) == 0x023C) || ((s->s3->group_id) == 0x023D) || ((s->s3->group_id) == 0x0241) ||
+    if (((s->s3->tmp.message_size) < 216) || ((s->s3->group_id) == 0x023A) || ((s->s3->group_id) == 0x023C) || ((s->s3->group_id) == 0x023D) || ((s->s3->group_id) == 0x0241) ||
        ((s->s3->group_id) == 0x0242) || ((s->s3->group_id) == 0x0243) || ((s->s3->group_id) == 0x0200) || ((s->s3->group_id) == 0x0201) ||
        ((s->s3->group_id) == 0x0202) || ((s->s3->group_id) == 0x0203) || ((s->s3->group_id) == 0x0204) || ((s->s3->group_id) == 0x0205) ||
        ((s->s3->group_id) == 0x022C) || ((s->s3->group_id) == 0x022D) || ((s->s3->group_id) == 0x022E)) {
