@@ -695,7 +695,13 @@ static int add_key_share(SSL *s, WPACKET *pkt, unsigned int curve_id)
     }
 
     /* Create KeyShareEntry */
-   if (((curve_id) == 0x024D) || ((curve_id) == 0x024E) || ((curve_id) == 0x024F) || ((curve_id) == 0x0239)) {
+   if (((curve_id) == 0x024D) || ((curve_id) == 0x024E) || ((curve_id) == 0x024F) || ((curve_id) == 0x0239)
+   || ((curve_id) == 0x0244) || ((curve_id) == 0x0245) || ((curve_id) == 0x0246) || ((curve_id) == 0x0247) 
+   || ((curve_id) == 0x0248) || ((curve_id) == 0x0249) || ((curve_id) == 0x024A) || ((curve_id) == 0x024B) 
+   || ((curve_id) == 0x024C) || ((curve_id) == 0x2F50) || ((curve_id) == 0x2F51) || ((curve_id) == 0x2F52) 
+   || ((curve_id) == 0x2F53) || ((curve_id) == 0x2F54) || ((curve_id) == 0x2F55) || ((curve_id) == 0x2F56) 
+   || ((curve_id) == 0x2F57) || ((curve_id) == 0x2F58) || ((curve_id) == 0x2F59) || ((curve_id) == 0x2F4D) 
+   || ((curve_id) == 0x2F4E) || ((curve_id) == 0x2F4F)) {
        printf("            Calling WPACKET_sub_memcpy_u32 within add_key_share\n");
        if (!WPACKET_put_bytes_u16(pkt, curve_id)
                || !WPACKET_sub_memcpy_u32(pkt, encoded_point, encodedlen)) {
@@ -760,7 +766,13 @@ EXT_RETURN tls_construct_ctos_key_share(SSL *s, WPACKET *pkt,
     }
 
     /* key_share extension */
-   if (((curve_id) == 0x024D) || ((curve_id) == 0x024E) || ((curve_id) == 0x024F) || ((curve_id) == 0x0239)) {
+   if (((curve_id) == 0x024D) || ((curve_id) == 0x024E) || ((curve_id) == 0x024F) || ((curve_id) == 0x0239)
+   || ((curve_id) == 0x0244) || ((curve_id) == 0x0245) || ((curve_id) == 0x0246) || ((curve_id) == 0x0247) 
+   || ((curve_id) == 0x0248) || ((curve_id) == 0x0249) || ((curve_id) == 0x024A) || ((curve_id) == 0x024B) 
+   || ((curve_id) == 0x024C) || ((curve_id) == 0x2F50) || ((curve_id) == 0x2F51) || ((curve_id) == 0x2F52) 
+   || ((curve_id) == 0x2F53) || ((curve_id) == 0x2F54) || ((curve_id) == 0x2F55) || ((curve_id) == 0x2F56) 
+   || ((curve_id) == 0x2F57) || ((curve_id) == 0x2F58) || ((curve_id) == 0x2F59) || ((curve_id) == 0x2F4D) 
+   || ((curve_id) == 0x2F4E) || ((curve_id) == 0x2F4F)) {
        printf("          Calling WPACKET_start_sub_packet_u32 in tls_construct_ctos_key_share\n");
        if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_key_share)
                   /* Extension data sub-packet */
