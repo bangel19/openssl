@@ -974,7 +974,6 @@ size_t ossl_statem_client_max_message_size(SSL *s)
         return 0;
 
     case TLS_ST_CR_SRVR_HELLO:
-        printf("The size of   s->s3->tmp.message_size   is = %d\n", s->s3->tmp.message_size);
         return SERVER_HELLO_MAX_LENGTH;
 
     case DTLS_ST_CR_HELLO_VERIFY_REQUEST:
@@ -1525,7 +1524,7 @@ MSG_PROCESS_RETURN tls_process_server_hello(SSL *s, PACKET *pkt)
    || ((s->s3->group_id) == 0x024C) || ((s->s3->group_id) == 0x2F50) || ((s->s3->group_id) == 0x2F51) || ((s->s3->group_id) == 0x2F52) 
    || ((s->s3->group_id) == 0x2F53) || ((s->s3->group_id) == 0x2F54) || ((s->s3->group_id) == 0x2F55) || ((s->s3->group_id) == 0x2F56) 
    || ((s->s3->group_id) == 0x2F57) || ((s->s3->group_id) == 0x2F58) || ((s->s3->group_id) == 0x2F59) || ((s->s3->group_id) == 0x2F4D) 
-   || ((s->s3->group_id) == 0x2F4E) || ((cs->s3->group_id) == 0x2F4F)) {
+   || ((s->s3->group_id) == 0x2F4E) || ((s->s3->group_id) == 0x2F4F)) {
         if (PACKET_remaining(pkt) == 0 && !hrr) {
             PACKET_null_init(&extpkt);
         } else if (!PACKET_as_length_prefixed_4(pkt, &extpkt)
