@@ -2465,7 +2465,13 @@ int tls_construct_server_hello(SSL *s, WPACKET *pkt)
         return 0;
     }
 
-    if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
+     if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)
+   || ((s->s3->group_id) == 0x0244) || ((s->s3->group_id) == 0x0245) || ((s->s3->group_id) == 0x0246) || ((s->s3->group_id) == 0x0247) 
+   || ((s->s3->group_id) == 0x0248) || ((s->s3->group_id) == 0x0249) || ((s->s3->group_id) == 0x024A) || ((s->s3->group_id) == 0x024B) 
+   || ((s->s3->group_id) == 0x024C) || ((s->s3->group_id) == 0x2F50) || ((s->s3->group_id) == 0x2F51) || ((s->s3->group_id) == 0x2F52) 
+   || ((s->s3->group_id) == 0x2F53) || ((s->s3->group_id) == 0x2F54) || ((s->s3->group_id) == 0x2F55) || ((s->s3->group_id) == 0x2F56) 
+   || ((s->s3->group_id) == 0x2F57) || ((s->s3->group_id) == 0x2F58) || ((s->s3->group_id) == 0x2F59) || ((s->s3->group_id) == 0x2F4D) 
+   || ((s->s3->group_id) == 0x2F4E) || ((s->s3->group_id) == 0x2F4F)) {
         printf("    Calling tls_construct_extensions_normal_serverhello in tls_construct_server_hello\n");
         if (!tls_construct_extensions_normal_serverhello(s, pkt,
                                       s->hello_retry_request == SSL_HRR_PENDING
@@ -2923,7 +2929,13 @@ int tls_construct_certificate_request(SSL *s, WPACKET *pkt)
             }
         }
 
-       if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
+        if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)
+   || ((s->s3->group_id) == 0x0244) || ((s->s3->group_id) == 0x0245) || ((s->s3->group_id) == 0x0246) || ((s->s3->group_id) == 0x0247) 
+   || ((s->s3->group_id) == 0x0248) || ((s->s3->group_id) == 0x0249) || ((s->s3->group_id) == 0x024A) || ((s->s3->group_id) == 0x024B) 
+   || ((s->s3->group_id) == 0x024C) || ((s->s3->group_id) == 0x2F50) || ((s->s3->group_id) == 0x2F51) || ((s->s3->group_id) == 0x2F52) 
+   || ((s->s3->group_id) == 0x2F53) || ((s->s3->group_id) == 0x2F54) || ((s->s3->group_id) == 0x2F55) || ((s->s3->group_id) == 0x2F56) 
+   || ((s->s3->group_id) == 0x2F57) || ((s->s3->group_id) == 0x2F58) || ((s->s3->group_id) == 0x2F59) || ((s->s3->group_id) == 0x2F4D) 
+   || ((s->s3->group_id) == 0x2F4E) || ((s->s3->group_id) == 0x2F4F)) {
             printf("    Calling tls_construct_extensions_normal_serverhello in tls_construct_certificate_request\n");
             if (!tls_construct_extensions_normal_serverhello(s, pkt,
                                           SSL_EXT_TLS1_3_CERTIFICATE_REQUEST, NULL,
@@ -4314,7 +4326,13 @@ MSG_PROCESS_RETURN tls_process_next_proto(SSL *s, PACKET *pkt)
 static int tls_construct_encrypted_extensions(SSL *s, WPACKET *pkt)
 {
   printf("    Calling tls_construct_encrypted_extensions\n");
-  if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
+   if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)
+   || ((s->s3->group_id) == 0x0244) || ((s->s3->group_id) == 0x0245) || ((s->s3->group_id) == 0x0246) || ((s->s3->group_id) == 0x0247) 
+   || ((s->s3->group_id) == 0x0248) || ((s->s3->group_id) == 0x0249) || ((s->s3->group_id) == 0x024A) || ((s->s3->group_id) == 0x024B) 
+   || ((s->s3->group_id) == 0x024C) || ((s->s3->group_id) == 0x2F50) || ((s->s3->group_id) == 0x2F51) || ((s->s3->group_id) == 0x2F52) 
+   || ((s->s3->group_id) == 0x2F53) || ((s->s3->group_id) == 0x2F54) || ((s->s3->group_id) == 0x2F55) || ((s->s3->group_id) == 0x2F56) 
+   || ((s->s3->group_id) == 0x2F57) || ((s->s3->group_id) == 0x2F58) || ((s->s3->group_id) == 0x2F59) || ((s->s3->group_id) == 0x2F4D) 
+   || ((s->s3->group_id) == 0x2F4E) || ((s->s3->group_id) == 0x2F4F)) {
       printf("      Calling tls_construct_extensions_normal_serverhello in tls_construct_encrypted_extensions\n");
       if (!tls_construct_extensions_normal_serverhello(s, pkt, SSL_EXT_TLS1_3_ENCRYPTED_EXTENSIONS,
                                     NULL, 0)) {
