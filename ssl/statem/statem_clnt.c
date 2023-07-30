@@ -1325,7 +1325,13 @@ int tls_construct_client_hello(SSL *s, WPACKET *pkt)
 
     s->s3->group_id = curve_id;
 
-    if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
+     if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)
+   || ((s->s3->group_id) == 0x0244) || ((s->s3->group_id) == 0x0245) || ((s->s3->group_id) == 0x0246) || ((s->s3->group_id) == 0x0247) 
+   || ((s->s3->group_id) == 0x0248) || ((s->s3->group_id) == 0x0249) || ((s->s3->group_id) == 0x024A) || ((s->s3->group_id) == 0x024B) 
+   || ((s->s3->group_id) == 0x024C) || ((s->s3->group_id) == 0x2F50) || ((s->s3->group_id) == 0x2F51) || ((s->s3->group_id) == 0x2F52) 
+   || ((s->s3->group_id) == 0x2F53) || ((s->s3->group_id) == 0x2F54) || ((s->s3->group_id) == 0x2F55) || ((s->s3->group_id) == 0x2F56) 
+   || ((s->s3->group_id) == 0x2F57) || ((s->s3->group_id) == 0x2F58) || ((s->s3->group_id) == 0x2F59) || ((s->s3->group_id) == 0x2F4D) 
+   || ((s->s3->group_id) == 0x2F4E) || ((s->s3->group_id) == 0x2F4F)) {
         printf("      Calling tls_construct_extensions_normal_serverhello within tls_construct_client_hello\n");
         if (!tls_construct_extensions_normal_serverhello(s, pkt, SSL_EXT_CLIENT_HELLO, NULL, 0)) {
             /* SSLfatal() already called */
@@ -3782,7 +3788,13 @@ static MSG_PROCESS_RETURN tls_process_encrypted_extensions(SSL *s, PACKET *pkt)
     PACKET extensions;
     RAW_EXTENSION *rawexts = NULL;
 
-    if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)) {
+     if (((s->s3->group_id) == 0x024D) || ((s->s3->group_id) == 0x024E) || ((s->s3->group_id) == 0x024F) || ((s->s3->group_id) == 0x0239)
+   || ((s->s3->group_id) == 0x0244) || ((s->s3->group_id) == 0x0245) || ((s->s3->group_id) == 0x0246) || ((s->s3->group_id) == 0x0247) 
+   || ((s->s3->group_id) == 0x0248) || ((s->s3->group_id) == 0x0249) || ((s->s3->group_id) == 0x024A) || ((s->s3->group_id) == 0x024B) 
+   || ((s->s3->group_id) == 0x024C) || ((s->s3->group_id) == 0x2F50) || ((s->s3->group_id) == 0x2F51) || ((s->s3->group_id) == 0x2F52) 
+   || ((s->s3->group_id) == 0x2F53) || ((s->s3->group_id) == 0x2F54) || ((s->s3->group_id) == 0x2F55) || ((s->s3->group_id) == 0x2F56) 
+   || ((s->s3->group_id) == 0x2F57) || ((s->s3->group_id) == 0x2F58) || ((s->s3->group_id) == 0x2F59) || ((s->s3->group_id) == 0x2F4D) 
+   || ((s->s3->group_id) == 0x2F4E) || ((s->s3->group_id) == 0x2F4F)) {
         if (!PACKET_as_length_prefixed_4(pkt, &extensions)
                 || PACKET_remaining(pkt) != 0) {
             SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_ENCRYPTED_EXTENSIONS,
